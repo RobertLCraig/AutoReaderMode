@@ -1,6 +1,7 @@
 # Auto Reader Mode
 
 **Auto Reader Mode** is a Chrome extension that automatically enables reader mode on user-specified websites. This extension helps improve your reading experience by stripping away unnecessary elements like ads and menus, allowing you to focus on the content.
+As much as possible, this extension has been written using ChatGPT.
 
 ## Features
 
