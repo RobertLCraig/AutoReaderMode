@@ -5,8 +5,9 @@
   "description": "Automatically enables reader mode on user-specified websites.",
   "permissions": [
     "storage",
-    "activeTab",
-    "scripting"
+    "tabs",
+    "scripting",
+    "webNavigation"
   ],
   "background": {
     "service_worker": "background.js"
