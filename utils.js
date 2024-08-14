@@ -1,7 +1,7 @@
 function convertUrl(originalUrl) {
     try {
         if (originalUrl.startsWith('read://')) {
-            return originalUrl;  // Avoid converting if it's already a reader mode URL
+            return originalUrl;
         }
 
         const urlObject = new URL(originalUrl);
@@ -10,16 +10,11 @@ function convertUrl(originalUrl) {
         const encodedUrl = encodeURIComponent(originalUrl);
         const readerUrl = baseUrl + encodedUrl;
 
-        console.log(`Converted ${originalUrl} to ${readerUrl}`);  // Log the conversion result
+        console.log(`Converted ${originalUrl} to ${readerUrl}`);
 
         return readerUrl;
     } catch (e) {
         console.error('Invalid URL:', originalUrl);
         return null;
     }
-}
-
-// Ensure that convertUrl is accessible when imported
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { convertUrl };
 }
