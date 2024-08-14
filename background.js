@@ -1,39 +1,47 @@
+importScripts("utils.js");
+
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === "complete" && tab.url && typeof tab.url === "string" && tab.url.trim() !== "" && tab.url.startsWith("http")) {
-      try {
-          const url = new URL(tab.url);
-          const hostname = url.hostname;
+    // Ensure we're only processing fully loaded tabs with valid URLs
+    if (changeInfo.status === "complete" && tab.url && typeof tab.url === "string" && tab.url.startsWith("http")) {
+        try {
+            console.log("Tab fully loaded:", tab.url);
 
-          console.log(`Tab updated: ${tab.url}`);
+            const url = new URL(tab.url);
+            const hostname = url.hostname;
 
-          chrome.storage.sync.get(["readerSites"], function(data) {
-              const sites = data.readerSites || [];
-              console.log("Enabled sites:", sites);
+            // Check if the site is in the enabled list
+            chrome.storage.sync.get(["readerSites"], function(data) {
+                const sites = data.readerSites || [];
+                console.log("Checking if site is in enabled list:", hostname, sites);
 
-              if (sites.includes(hostname)) {
-                  console.log(`Converting ${hostname} to reader mode`);
+                if (sites.includes(hostname)) {
+                    console.log("Site is in the enabled list, converting to reader mode:", hostname);
 
-                  const readerUrl = convertUrl(tab.url);
-
-                  if (readerUrl) {
-                      chrome.tabs.update(tabId, { url: readerUrl });
-                  } else {
-                      console.error("Failed to convert URL to reader mode:", tab.url);
-                  }
-              } else {
-                  console.log(`${hostname} is not in the enabled sites list.`);
-              }
-          });
-      } catch (e) {
-          console.error("Failed to construct URL:", tab.url, e);
-      }
-  } else {
-      if (!tab.url) {
-          console.warn("Tab URL is undefined during onUpdated event. Tab details:", tab);
-      } else if (!tab.url.startsWith("http")) {
-          console.warn("Tab URL does not start with http/https, ignoring. Tab URL:", tab.url);
-      } else {
-          console.warn("Unexpected condition during onUpdated event. Tab details:", tab);
-      }
-  }
+                    const readerUrl = convertUrl(tab.url);
+                    if (readerUrl) {
+                        console.log("Reader URL generated, updating tab:", readerUrl);
+                        chrome.tabs.update(tabId, { url: readerUrl }, function() {
+                            if (chrome.runtime.lastError) {
+                                console.error("Failed to update tab to reader mode:", chrome.runtime.lastError);
+                            } else {
+                                console.log(`Successfully switched ${hostname} to reader mode.`);
+                            }
+                        });
+                    } else {
+                        console.error("Failed to convert URL to reader mode:", tab.url);
+                    }
+                } else {
+                    console.log("Site is not in the enabled list:", hostname);
+                }
+            });
+        } catch (e) {
+            console.error("Error processing tab URL:", tab.url, e);
+        }
+    } else {
+        if (!tab.url) {
+            console.warn("Tab URL is undefined. This may happen for new tabs, discarded tabs, or internal Chrome pages.");
+        } else if (!tab.url.startsWith("http")) {
+            console.warn("Tab URL does not start with http/https, ignoring. Tab URL:", tab.url);
+        }
+    }
 });
