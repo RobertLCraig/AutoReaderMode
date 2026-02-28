@@ -1,70 +1,80 @@
-importScripts("utils.js");
+/**
+ * background.js — Service worker for Auto Reader Mode.
+ *
+ * Strategy:
+ *   - Edge   → navigate the tab to the native read:// Immersive Reader URL.
+ *   - Chrome → inject reader.js as a content script to show an inline overlay.
+ *
+ * The enabled-sites list is kept in a local cache and synced with
+ * chrome.storage.sync so we avoid a storage round-trip on every navigation.
+ */
+importScripts('utils.js');
 
-function initializeReaderSites() {
-    return new Promise((resolve) => {
-        chrome.storage.sync.get("readerSites", (data) => {
+// ── Site list cache ───────────────────────────────────────────────────────────
+
+let cachedSites = [];
+
+function loadSites() {
+    return new Promise(resolve => {
+        chrome.storage.sync.get('readerSites', data => {
+            cachedSites = data.readerSites || [];
             if (!data.readerSites) {
-                chrome.storage.sync.set({ readerSites: [] }, () => {
-                    console.log("Initialized readerSites in storage.");
-                    resolve([]);
-                });
-            } else {
-                console.log("readerSites already initialized:", data.readerSites);
-                resolve(data.readerSites);
+                chrome.storage.sync.set({ readerSites: [] });
             }
+            resolve(cachedSites);
         });
     });
 }
 
-async function handleWebNavigation(details) {
-    if (details.frameId === 0 && details.url && details.url.startsWith("http")) {
-        try {
-            console.log("WebNavigation completed for URL:", details.url);
+// Keep the in-memory cache in sync whenever storage changes
+// (e.g. the user adds/removes a site in the popup).
+chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === 'sync' && changes.readerSites) {
+        cachedSites = changes.readerSites.newValue || [];
+    }
+});
 
-            const url = new URL(details.url);
-            const hostname = url.hostname;
+// ── Navigation handler ────────────────────────────────────────────────────────
 
-            const sites = await initializeReaderSites();
+async function handleNavigation(details) {
+    // Only act on top-level HTTP/HTTPS navigation.
+    if (details.frameId !== 0) return;
+    if (!details.url || !details.url.startsWith('http')) return;
 
-            console.log("Checking if site is in enabled list:", hostname, sites);
+    let hostname;
+    try {
+        hostname = new URL(details.url).hostname;
+    } catch (_) {
+        return;
+    }
 
-            if (sites.includes(hostname)) {
-                console.log("Site is in the enabled list, converting to reader mode:", hostname);
+    if (!cachedSites.includes(hostname)) return;
 
-                const readerUrl = convertUrl(details.url);
-                if (readerUrl) {
-                    console.log("Reader URL generated, updating tab:", readerUrl);
-                    chrome.tabs.update(details.tabId, { url: readerUrl }, function () {
-                        if (chrome.runtime.lastError) {
-                            console.error("Failed to update tab to reader mode:", chrome.runtime.lastError);
-                        } else {
-                            console.log(`Successfully switched ${hostname} to reader mode.`);
-                        }
-                    });
-                } else {
-                    console.error("Failed to convert URL to reader mode:", details.url);
-                }
-            } else {
-                console.log("Site is not in the enabled list:", hostname);
+    if (isEdgeBrowser()) {
+        // Edge: navigate to the native Immersive Reader URL.
+        const readerUrl = convertUrl(details.url);
+        if (!readerUrl) return;
+        chrome.tabs.update(details.tabId, { url: readerUrl }, () => {
+            if (chrome.runtime.lastError) {
+                console.error('[AutoReaderMode] tab update failed:', chrome.runtime.lastError.message);
             }
-        } catch (e) {
-            console.error("Error processing tab URL:", details.url, e);
-        }
+        });
     } else {
-        if (!details.url) {
-            console.warn("WebNavigation URL is undefined or empty. This may happen for new tabs, discarded tabs, or internal Chrome pages.");
-        } else if (!details.url.startsWith("http")) {
-            console.warn("WebNavigation URL does not start with http/https, ignoring. URL:", details.url);
+        // Chrome / other Chromium: inject the inline reader overlay.
+        try {
+            await chrome.scripting.executeScript({
+                target: { tabId: details.tabId },
+                files: ['reader.js'],
+            });
+        } catch (err) {
+            console.error('[AutoReaderMode] script injection failed:', err.message);
         }
     }
 }
 
-chrome.runtime.onInstalled.addListener(() => {
-    initializeReaderSites();
-});
+// ── Lifecycle ─────────────────────────────────────────────────────────────────
 
-chrome.runtime.onStartup.addListener(() => {
-    initializeReaderSites();
-});
+chrome.runtime.onInstalled.addListener(() => loadSites());
+chrome.runtime.onStartup.addListener(() => loadSites());
 
-chrome.webNavigation.onCompleted.addListener(handleWebNavigation);
+chrome.webNavigation.onCompleted.addListener(handleNavigation);

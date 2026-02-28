@@ -5,22 +5,379 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auto Reader Mode</title>
     <style>
-        body { font-family: Arial, sans-serif; width: 300px; padding: 10px; }
-        button { margin-top: 10px; width: 100%; padding: 10px; font-size: 14px; }
+        /* ── Reset & base ───────────────────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+            font-size: 14px;
+            color: #1f2937;
+            background: #ffffff;
+            width: 320px;
+            min-height: 200px;
+        }
+
+        /* ── Header ─────────────────────────────────────────────────────── */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 16px 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .header-icon {
+            display: flex;
+            align-items: center;
+            color: #2563eb;
+            flex-shrink: 0;
+        }
+        .header-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #111827;
+            flex: 1;
+        }
+        .header-version {
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+        /* ── Current site section ───────────────────────────────────────── */
+        .section {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .section-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #9ca3af;
+            margin-bottom: 8px;
+        }
+
+        .current-site-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .current-domain {
+            font-size: 14px;
+            font-weight: 500;
+            color: #111827;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .current-domain.unavailable {
+            color: #9ca3af;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        /* ── Toggle switch ──────────────────────────────────────────────── */
+        .toggle-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .toggle-status-text {
+            font-size: 12px;
+            color: #9ca3af;
+            min-width: 26px;
+            text-align: right;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 22px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: #d1d5db;
+            border-radius: 22px;
+            transition: background-color 0.2s;
+        }
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background: #ffffff;
+            border-radius: 50%;
+            transition: transform 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+        }
+        .toggle-switch input:checked + .toggle-slider { background-color: #2563eb; }
+        .toggle-switch input:checked + .toggle-slider::before { transform: translateX(18px); }
+        .toggle-switch input:disabled + .toggle-slider { opacity: 0.4; cursor: not-allowed; }
+
+        .toggle-description {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+
+        /* ── Reader mode button ─────────────────────────────────────────── */
+        .reader-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            border-radius: 8px;
+            border: 1.5px solid #2563eb;
+            background: #2563eb;
+            color: #ffffff;
+            transition: background 0.15s, border-color 0.15s, opacity 0.15s;
+        }
+        .reader-btn:hover:not(:disabled) {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+        .reader-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+        .reader-btn.active {
+            background: #ffffff;
+            color: #2563eb;
+        }
+        .reader-btn.active:hover:not(:disabled) {
+            background: #eff6ff;
+        }
+        .reader-btn-hint {
+            font-size: 11px;
+            color: #9ca3af;
+            text-align: center;
+            margin-top: 8px;
+        }
+        .reader-btn-hint.hidden { display: none; }
+
+        /* ── Browser badge ──────────────────────────────────────────────── */
+        .browser-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 10px;
+        }
+        .browser-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #10b981;
+            flex-shrink: 0;
+        }
+
+        /* ── Sites list ─────────────────────────────────────────────────── */
+        .sites-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .sites-label { margin-bottom: 0; }
+        .sites-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            background: #e5e7eb;
+            color: #6b7280;
+            border-radius: 99px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .sites-list {
+            list-style: none;
+            max-height: 140px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #e5e7eb transparent;
+        }
+        .sites-list::-webkit-scrollbar { width: 4px; }
+        .sites-list::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 4px; }
+
+        .site-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: background 0.1s;
+        }
+        .site-item:hover { background: #f9fafb; }
+        .site-item.current-site { background: #eff6ff; }
+        .site-item .site-name {
+            font-size: 13px;
+            color: #374151;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 220px;
+        }
+        .site-item.current-site .site-name { color: #1d4ed8; font-weight: 500; }
+        .remove-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+            background: none;
+            border: none;
+            border-radius: 4px;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: color 0.15s, background 0.15s;
+        }
+        .remove-btn:hover { color: #ef4444; background: #fee2e2; }
+
+        .empty-state {
+            text-align: center;
+            padding: 16px 8px;
+            color: #9ca3af;
+        }
+        .empty-state p { font-size: 13px; margin-bottom: 4px; }
+        .empty-state .hint { font-size: 12px; }
+
+        /* ── Toast ──────────────────────────────────────────────────────── */
+        .toast {
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 10px 16px;
+            font-size: 13px;
+            text-align: center;
+            background: #1f2937;
+            color: #ffffff;
+            transition: opacity 0.3s;
+        }
+        .toast.hidden { display: none; }
+        .toast.success { background: #065f46; }
+        .toast.error   { background: #7f1d1d; }
+
+        /* ── Not-available state ────────────────────────────────────────── */
+        .unavailable-state {
+            padding: 24px 16px;
+            text-align: center;
+            color: #9ca3af;
+        }
+        .unavailable-state svg { margin-bottom: 8px; color: #d1d5db; }
+        .unavailable-state p { font-size: 13px; line-height: 1.5; }
     </style>
-    <script src="background.js"></script>
-    <script src="utils.js"></script>
-    <script src="popup.js"></script>
-    
 </head>
 <body>
-    <h2>Auto Reader Mode</h2>
-    <div>
-        <input type="text" id="current-site" readonly>
-        <button id="add-site">Add Current Site</button>
+
+    <!-- Header -->
+    <header class="header">
+        <span class="header-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+            </svg>
+        </span>
+        <span class="header-title">Auto Reader Mode</span>
+        <span class="header-version">v1.2</span>
+    </header>
+
+    <!-- Main content — toggled by JS based on page state -->
+    <div id="main-content">
+
+        <!-- Current site -->
+        <div class="section" id="site-section">
+            <div class="section-label">Current site</div>
+            <div class="current-site-row">
+                <span class="current-domain" id="current-domain">—</span>
+                <div class="toggle-wrap">
+                    <span class="toggle-status-text" id="toggle-text">Off</span>
+                    <label class="toggle-switch" for="auto-toggle">
+                        <input type="checkbox" id="auto-toggle"
+                               aria-label="Auto-enable reader mode for this site">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            <p class="toggle-description" id="toggle-desc">
+                Automatically open in reader mode every time you visit this site
+            </p>
+            <div class="browser-badge" id="browser-badge">
+                <span class="dot"></span>
+                <span id="browser-name"></span>
+            </div>
+        </div>
+
+        <!-- Manual reader mode toggle -->
+        <div class="section" id="reader-section">
+            <button id="reader-btn" class="reader-btn" type="button" disabled>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     aria-hidden="true">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                </svg>
+                <span id="reader-btn-text">Open Reader Mode</span>
+            </button>
+            <p class="reader-btn-hint hidden" id="reader-btn-hint">Press Esc or Alt+R to exit</p>
+        </div>
+
+        <!-- Auto-enabled sites list -->
+        <div class="section" id="sites-section">
+            <div class="sites-header">
+                <span class="section-label sites-label">Auto-enabled sites</span>
+                <span class="sites-count" id="sites-count">0</span>
+            </div>
+            <ul class="sites-list" id="sites-list"></ul>
+            <div class="empty-state hidden" id="sites-empty">
+                <p>No sites added yet.</p>
+                <p class="hint">Use the toggle above to add the current site.</p>
+            </div>
+        </div>
+
     </div>
-    <h3>Enabled Sites:</h3>
-    <ul id="site-list"></ul>
-    <button id="reader-mode-button">Switch to Reader Mode</button>
+
+    <!-- Not-available state (chrome://, new tab, etc.) -->
+    <div id="unavailable-state" class="unavailable-state" hidden>
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <p>Reader mode is not available on<br>browser or extension pages.</p>
+    </div>
+
+    <!-- Toast notification -->
+    <div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="utils.js"></script>
+    <script src="popup.js"></script>
 </body>
 </html>
