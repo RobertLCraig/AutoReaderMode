@@ -1,53 +1,115 @@
 # Auto Reader Mode
 
-**Auto Reader Mode** is a Chrome extension that automatically enables reader mode on user-specified websites. This extension helps improve your reading experience by stripping away unnecessary elements like ads and menus, allowing you to focus on the content.
-As much as possible, this extension has been written using ChatGPT.
+A Manifest V3 browser extension that **automatically activates reader mode** on websites you choose.
+
+- **Microsoft Edge** — uses Edge's built-in Immersive Reader (`read://` URL scheme).
+- **Chrome / Chromium** — injects a clean inline reading overlay directly into the page.
+
+---
 
 ## Features
 
-- Automatically redirects specified websites to reader mode.
-- Simple UI to add or remove websites from the list of enabled sites.
-- On-demand switch to reader mode with a button click.
+| Feature | Description |
+|---|---|
+| Auto-trigger | Automatically opens reader mode whenever you navigate to a site you've enabled |
+| Manual toggle | One-click button in the popup to enter or exit reader mode on any page |
+| Site management | Add or remove sites from the auto-reader list at any time |
+| Dark mode | Reader overlay respects your OS dark-mode preference (Chrome) |
+| Keyboard shortcut | Press **Esc** or **Alt+R** to exit the reader overlay (Chrome) |
+| Cross-browser | Works in Edge (Immersive Reader) and Chrome/Chromium (inline overlay) |
+
+---
+
+## Browser Compatibility
+
+| Browser | Reader mode method | Min version |
+|---|---|---|
+| Microsoft Edge | Native `read://` Immersive Reader | Edge 79+ |
+| Google Chrome | Injected inline overlay | Chrome 88+ |
+| Brave, Opera, Arc, etc. | Injected inline overlay | Any MV3-capable build |
+
+---
 
 ## Installation
 
+See [INSTALL.md](INSTALL.md) for full step-by-step instructions.
+
+**Quick start (unpacked):**
+
 1. Clone or download this repository.
-2. Open Chrome and navigate to `chrome://extensions/`.
-3. Enable "Developer mode" by clicking the toggle switch in the top right corner.
-4. Click on "Load unpacked" and select the directory containing the extension files.
+2. Open `chrome://extensions/` (or `edge://extensions/`).
+3. Enable **Developer mode**.
+4. Click **Load unpacked** and select the `src/` folder.
+
+---
 
 ## Usage
 
-1. Click on the extension icon in the Chrome toolbar to open the popup.
-2. The popup will display the current site's domain.
-3. To enable reader mode for the current site, click the "Add Current Site" button.
-4. The site will be added to the list of enabled sites.
-5. You can remove sites from the list by clicking the "Remove" button next to each site.
-6. Use the "Switch to Reader Mode" button to manually convert the current page to reader mode.
+1. **Navigate** to any web page you want to read.
+2. **Click the extension icon** in your browser toolbar to open the popup.
+3. **Flip the toggle** next to the current site's domain to enable auto reader mode for that site.
+   - Every future visit will open in reader mode automatically.
+4. Use the **Open Reader Mode** button to immediately view the current page in reader mode without adding the site to the auto list.
+5. **Remove** any site from the list by clicking the × button next to it.
+
+### Exiting reader mode (Chrome)
+
+- Click **Exit Reader Mode** in the popup, or
+- Press **Esc** or **Alt+R** while the overlay is visible.
+
+---
 
 ## File Structure
 
-- `manifest.json` - Defines the extension's metadata, permissions, and background scripts.
-- `background.js` - Handles tab updates and redirects to reader mode using the utility functions.
-- `popup.html` - The HTML file for the extension's popup interface.
-- `popup.js` - Manages the UI interactions in the popup, including adding/removing sites and switching to reader mode.
-- `utils.js` - Contains utility functions like `convertUrl` for generating reader mode URLs.
+```
+src/
+├── manifest.json     Extension metadata, permissions, and entry points
+├── background.js     Service worker — listens for navigation and auto-triggers reader mode
+├── utils.js          Shared helpers: browser detection, URL conversion
+├── reader.js         Content script — creates the inline reading overlay (Chrome)
+├── popup.html        Popup UI markup and styles
+├── popup.js          Popup logic — site management, manual toggle
+└── icons/
+    ├── icon16.png
+    ├── icon48.png
+    └── icon128.png
+```
+
+---
+
+## How It Works
+
+### Edge
+
+When you visit an enabled site, `background.js` intercepts the `webNavigation.onCompleted` event and calls `chrome.tabs.update` to navigate the tab to Edge's native `read://https_<domain>/?url=<encoded-url>` format. Edge's Immersive Reader takes over from there.
+
+### Chrome / Chromium
+
+`background.js` calls `chrome.scripting.executeScript` to inject `reader.js` into the page. The script extracts the main article content using a set of common CSS selectors (`article`, `[role="main"]`, `.post-content`, etc.), cleans out non-content elements (ads, navigation, sidebars), and renders everything in a full-screen styled overlay. Pressing Esc, Alt+R, or clicking "Exit Reader Mode" removes the overlay without navigating away.
+
+---
 
 ## Development
 
-To modify or extend the functionality of this extension:
+1. Edit files in `src/`.
+2. Go to `chrome://extensions/` → find **Auto Reader Mode** → click **Reload** (or use the rotate icon).
+3. Open the Service Worker DevTools from the extension card to inspect background script logs.
 
-1. Make your changes to the relevant files.
-2. Reload the extension in Chrome by going to `chrome://extensions/` and clicking "Reload" on the Auto Reader Mode extension.
+---
+
+## Permissions
+
+| Permission | Why it's needed |
+|---|---|
+| `storage` | Persist the list of auto-reader sites across sessions |
+| `tabs` | Query the active tab URL; navigate Edge tabs to `read://` |
+| `scripting` | Inject `reader.js` into pages (Chrome) |
+| `webNavigation` | Detect when a page finishes loading to auto-trigger |
+| `activeTab` | Allow popup-triggered script injection without broad host access for popup actions |
+| `host_permissions: https://*/*, http://*/*` | Required so the background service worker can inject scripts on any HTTP/HTTPS page |
+
+---
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-
-## Contributing
-
-Contributions are welcome! Please submit a pull request or open an issue to discuss your changes.
-
-## Contact
-
-If you have any questions or suggestions, feel free to open an issue in this repository.
+MIT © 2024 RobertLCraig — see [LICENSE](LICENSE).
