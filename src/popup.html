@@ -5,379 +5,347 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auto Reader Mode</title>
     <style>
-        /* ── Reset & base ───────────────────────────────────────────────── */
+        :root {
+            --bg: #ffffff;
+            --bg-soft: #f9fafb;
+            --bg-hover: #f3f4f6;
+            --border: #e5e7eb;
+            --border-strong: #d1d5db;
+            --text: #111827;
+            --text-soft: #4b5563;
+            --text-muted: #9ca3af;
+            --accent: #2563eb;
+            --accent-soft: #dbeafe;
+            --success: #059669;
+            --success-soft: #d1fae5;
+            --warning: #d97706;
+            --warning-soft: #fef3c7;
+            --neutral-soft: #f3f4f6;
+            --danger: #dc2626;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f1115;
+                --bg-soft: #1a1d23;
+                --bg-hover: #22262e;
+                --border: #2a2f37;
+                --border-strong: #3a4049;
+                --text: #f3f4f6;
+                --text-soft: #d1d5db;
+                --text-muted: #6b7280;
+                --accent: #60a5fa;
+                --accent-soft: #1e3a5f;
+                --success: #34d399;
+                --success-soft: #064e3b;
+                --warning: #fbbf24;
+                --warning-soft: #78350f;
+                --neutral-soft: #22262e;
+                --danger: #f87171;
+            }
+        }
+
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
+        html, body {
             font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
             font-size: 14px;
-            color: #1f2937;
-            background: #ffffff;
-            width: 320px;
-            min-height: 200px;
+            color: var(--text);
+            background: var(--bg);
+            width: 380px;
         }
 
-        /* ── Header ─────────────────────────────────────────────────────── */
-        .header {
+        button { font-family: inherit; }
+
+        /* ── Header ───────────────────────────────────────────────────────── */
+        .topbar {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 14px 16px 12px;
-            border-bottom: 1px solid #f0f0f0;
+            gap: 10px;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
         }
-        .header-icon {
+        .topbar-icon {
             display: flex;
             align-items: center;
-            color: #2563eb;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-radius: 8px;
             flex-shrink: 0;
         }
-        .header-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: #111827;
+        .topbar-title {
             flex: 1;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
         }
-        .header-version {
-            font-size: 11px;
-            color: #9ca3af;
+        .topbar-cog {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: none;
+            border: none;
+            border-radius: 8px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: background 0.12s, color 0.12s;
+        }
+        .topbar-cog:hover {
+            background: var(--bg-hover);
+            color: var(--text-soft);
         }
 
-        /* ── Current site section ───────────────────────────────────────── */
-        .section {
-            padding: 14px 16px;
-            border-bottom: 1px solid #f3f4f6;
+        /* ── This-page hero ──────────────────────────────────────────────── */
+        .hero {
+            padding: 18px 16px 16px;
         }
-        .section-label {
+        .hero-domain {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 12px;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1;
+            margin-bottom: 14px;
+            max-width: 100%;
+        }
+        .status-pill .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .status-pill .pill-text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .status-pill.idle    { background: var(--neutral-soft); color: var(--text-soft); }
+        .status-pill.idle .dot { background: var(--text-muted); }
+        .status-pill.fired   { background: var(--success-soft); color: var(--success); }
+        .status-pill.fired .dot { background: var(--success); }
+        .status-pill.manual  { background: var(--accent-soft); color: var(--accent); }
+        .status-pill.manual .dot { background: var(--accent); }
+
+        .reason-line {
+            font-size: 13px;
+            color: var(--text-soft);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+        .reason-line.empty { color: var(--text-muted); font-style: italic; }
+
+        /* ── Primary action ──────────────────────────────────────────────── */
+        .reader-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.12s, transform 0.08s;
+        }
+        .reader-btn:hover  { background: #1d4ed8; }
+        .reader-btn:active { transform: translateY(1px); }
+        .reader-btn:disabled {
+            background: var(--neutral-soft);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+        .reader-btn.exit {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border-strong);
+        }
+        .reader-btn.exit:hover { background: var(--bg-hover); }
+
+        @media (prefers-color-scheme: dark) {
+            .reader-btn       { background: var(--accent); color: #0b1220; }
+            .reader-btn:hover { background: #93c5fd; }
+        }
+
+        /* ── Per-site rule (segmented) ───────────────────────────────────── */
+        .rule-section {
+            padding: 16px 16px 18px;
+            border-top: 1px solid var(--border);
+        }
+        .rule-label {
             font-size: 11px;
             font-weight: 600;
             letter-spacing: 0.06em;
             text-transform: uppercase;
-            color: #9ca3af;
-            margin-bottom: 8px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
         }
 
-        .current-site-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-        .current-domain {
-            font-size: 14px;
-            font-weight: 500;
-            color: #111827;
-            flex: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .current-domain.unavailable {
-            color: #9ca3af;
-            font-weight: 400;
-            font-style: italic;
-        }
-
-        /* ── Toggle switch ──────────────────────────────────────────────── */
-        .toggle-wrap {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-        .toggle-status-text {
-            font-size: 12px;
-            color: #9ca3af;
-            min-width: 26px;
-            text-align: right;
-        }
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 40px;
-            height: 22px;
-        }
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-            position: absolute;
-        }
-        .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            inset: 0;
-            background-color: #d1d5db;
-            border-radius: 22px;
-            transition: background-color 0.2s;
-        }
-        .toggle-slider::before {
-            content: '';
-            position: absolute;
-            height: 16px;
-            width: 16px;
-            left: 3px;
-            bottom: 3px;
-            background: #ffffff;
-            border-radius: 50%;
-            transition: transform 0.2s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.25);
-        }
-        .toggle-switch input:checked + .toggle-slider { background-color: #2563eb; }
-        .toggle-switch input:checked + .toggle-slider::before { transform: translateX(18px); }
-        .toggle-switch input:disabled + .toggle-slider { opacity: 0.4; cursor: not-allowed; }
-
-        .toggle-description {
-            font-size: 12px;
-            color: #6b7280;
-            margin-top: 6px;
-            line-height: 1.4;
-        }
-
-        /* ── Reader mode button ─────────────────────────────────────────── */
-        .reader-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            padding: 10px 16px;
-            font-size: 14px;
-            font-weight: 500;
-            font-family: inherit;
-            cursor: pointer;
-            border-radius: 8px;
-            border: 1.5px solid #2563eb;
-            background: #2563eb;
-            color: #ffffff;
-            transition: background 0.15s, border-color 0.15s, opacity 0.15s;
-        }
-        .reader-btn:hover:not(:disabled) {
-            background: #1d4ed8;
-            border-color: #1d4ed8;
-        }
-        .reader-btn:disabled {
-            opacity: 0.35;
-            cursor: not-allowed;
-        }
-        .reader-btn.active {
-            background: #ffffff;
-            color: #2563eb;
-        }
-        .reader-btn.active:hover:not(:disabled) {
-            background: #eff6ff;
-        }
-        .reader-btn-hint {
-            font-size: 11px;
-            color: #9ca3af;
-            text-align: center;
-            margin-top: 8px;
-        }
-        .reader-btn-hint.hidden { display: none; }
-
-        /* ── Browser badge ──────────────────────────────────────────────── */
-        .browser-badge {
-            display: inline-flex;
-            align-items: center;
+        .segmented {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 4px;
-            font-size: 11px;
-            color: #6b7280;
-            margin-top: 10px;
+            background: var(--bg-soft);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 4px;
         }
-        .browser-badge .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #10b981;
-            flex-shrink: 0;
-        }
-
-        /* ── Sites list ─────────────────────────────────────────────────── */
-        .sites-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-        .sites-label { margin-bottom: 0; }
-        .sites-count {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 18px;
-            height: 18px;
-            padding: 0 5px;
-            background: #e5e7eb;
-            color: #6b7280;
-            border-radius: 99px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .sites-list {
-            list-style: none;
-            max-height: 140px;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: #e5e7eb transparent;
-        }
-        .sites-list::-webkit-scrollbar { width: 4px; }
-        .sites-list::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 4px; }
-
-        .site-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 6px 8px;
-            border-radius: 6px;
-            transition: background 0.1s;
-        }
-        .site-item:hover { background: #f9fafb; }
-        .site-item.current-site { background: #eff6ff; }
-        .site-item .site-name {
-            font-size: 13px;
-            color: #374151;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 220px;
-        }
-        .site-item.current-site .site-name { color: #1d4ed8; font-weight: 500; }
-        .remove-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 22px;
-            height: 22px;
-            flex-shrink: 0;
+        .seg-btn {
             background: none;
             border: none;
-            border-radius: 4px;
-            color: #9ca3af;
-            cursor: pointer;
-            transition: color 0.15s, background 0.15s;
-        }
-        .remove-btn:hover { color: #ef4444; background: #fee2e2; }
-
-        .empty-state {
-            text-align: center;
-            padding: 16px 8px;
-            color: #9ca3af;
-        }
-        .empty-state p { font-size: 13px; margin-bottom: 4px; }
-        .empty-state .hint { font-size: 12px; }
-
-        /* ── Toast ──────────────────────────────────────────────────────── */
-        .toast {
-            position: sticky;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 10px 16px;
+            padding: 7px 8px;
             font-size: 13px;
-            text-align: center;
-            background: #1f2937;
-            color: #ffffff;
-            transition: opacity 0.3s;
+            font-weight: 500;
+            color: var(--text-soft);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.12s, color 0.12s;
         }
-        .toast.hidden { display: none; }
-        .toast.success { background: #065f46; }
-        .toast.error   { background: #7f1d1d; }
+        .seg-btn:hover:not(.active) { background: var(--bg-hover); }
+        .seg-btn.active {
+            background: var(--bg);
+            color: var(--text);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 0 0 1px var(--border-strong);
+        }
+        @media (prefers-color-scheme: dark) {
+            .seg-btn.active {
+                background: var(--bg-hover);
+                box-shadow: 0 0 0 1px var(--border-strong);
+            }
+        }
+        .rule-help {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 8px;
+            line-height: 1.45;
+        }
 
-        /* ── Not-available state ────────────────────────────────────────── */
-        .unavailable-state {
+        /* ── Footer ──────────────────────────────────────────────────────── */
+        .footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+            background: var(--bg-soft);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .footer a {
+            color: var(--text-soft);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .footer a:hover { color: var(--accent); text-decoration: underline; }
+
+        /* ── Unavailable / restricted state ──────────────────────────────── */
+        .unavailable {
             padding: 24px 16px;
             text-align: center;
-            color: #9ca3af;
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.55;
         }
-        .unavailable-state svg { margin-bottom: 8px; color: #d1d5db; }
-        .unavailable-state p { font-size: 13px; line-height: 1.5; }
+        .unavailable strong {
+            display: block;
+            font-size: 14px;
+            color: var(--text-soft);
+            margin-bottom: 6px;
+        }
+
+        /* ── Toast ───────────────────────────────────────────────────────── */
+        .toast {
+            position: fixed;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #111827;
+            color: white;
+            font-size: 12px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0.95;
+            z-index: 100;
+        }
+        .toast.error  { background: var(--danger); }
+        .toast.success { background: var(--success); }
+        .hidden, [hidden] { display: none !important; }
     </style>
 </head>
 <body>
-
-    <!-- Header -->
-    <header class="header">
-        <span class="header-icon" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+    <header class="topbar">
+        <span class="topbar-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 3h12v10H2V3zm2 2v6h8V5H4zm1 1h6M5 8h6M5 10h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
             </svg>
         </span>
-        <span class="header-title">Auto Reader Mode</span>
-        <span class="header-version">v1.2</span>
+        <span class="topbar-title">Auto Reader Mode</span>
+        <button class="topbar-cog" id="open-options" type="button" aria-label="Open settings" title="Settings">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+            </svg>
+        </button>
     </header>
 
-    <!-- Main content — toggled by JS based on page state -->
-    <div id="main-content">
-
-        <!-- Current site -->
-        <div class="section" id="site-section">
-            <div class="section-label">Current site</div>
-            <div class="current-site-row">
-                <span class="current-domain" id="current-domain">—</span>
-                <div class="toggle-wrap">
-                    <span class="toggle-status-text" id="toggle-text">Off</span>
-                    <label class="toggle-switch" for="auto-toggle">
-                        <input type="checkbox" id="auto-toggle"
-                               aria-label="Auto-enable reader mode for this site">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
-            <p class="toggle-description" id="toggle-desc">
-                Automatically open in reader mode every time you visit this site
-            </p>
-            <div class="browser-badge" id="browser-badge">
+    <main id="main-content">
+        <section class="hero">
+            <div class="hero-domain" id="hero-domain">-</div>
+            <div class="status-pill idle" id="status-pill">
                 <span class="dot"></span>
-                <span id="browser-name"></span>
+                <span class="pill-text" id="status-text">Not triggered</span>
             </div>
-        </div>
-
-        <!-- Manual reader mode toggle -->
-        <div class="section" id="reader-section">
-            <button id="reader-btn" class="reader-btn" type="button" disabled>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                     aria-hidden="true">
-                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                </svg>
+            <p class="reason-line empty" id="reason-line">No reader-mode rule applies on this page.</p>
+            <button class="reader-btn" id="reader-btn" type="button">
                 <span id="reader-btn-text">Open Reader Mode</span>
             </button>
-            <p class="reader-btn-hint hidden" id="reader-btn-hint">Press Esc or Alt+R to exit</p>
-        </div>
+        </section>
 
-        <!-- Auto-enabled sites list -->
-        <div class="section" id="sites-section">
-            <div class="sites-header">
-                <span class="section-label sites-label">Auto-enabled sites</span>
-                <span class="sites-count" id="sites-count">0</span>
+        <section class="rule-section" id="rule-section">
+            <div class="rule-label">Rule for this site</div>
+            <div class="segmented" role="radiogroup" aria-label="Per-site rule">
+                <button class="seg-btn" type="button" role="radio" data-rule="always" aria-checked="false">Always</button>
+                <button class="seg-btn active" type="button" role="radio" data-rule="default" aria-checked="true">Default</button>
+                <button class="seg-btn" type="button" role="radio" data-rule="never" aria-checked="false">Never</button>
             </div>
-            <ul class="sites-list" id="sites-list"></ul>
-            <div class="empty-state hidden" id="sites-empty">
-                <p>No sites added yet.</p>
-                <p class="hint">Use the toggle above to add the current site.</p>
-            </div>
-        </div>
+            <p class="rule-help" id="rule-help">Use the global detection rules.</p>
+        </section>
 
+        <footer class="footer">
+            <span><span id="user-sites-count">0</span> manual <span id="sites-word">sites</span></span>
+            <a href="#" id="footer-options">Settings &rarr;</a>
+        </footer>
+    </main>
+
+    <div class="unavailable" id="unavailable" hidden>
+        <strong>Reader mode unavailable here</strong>
+        Auto Reader Mode does not run on browser pages, extension pages, or local files.
     </div>
 
-    <!-- Not-available state (chrome://, new tab, etc.) -->
-    <div id="unavailable-state" class="unavailable-state" hidden>
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" y1="8" x2="12" y2="12"/>
-            <line x1="12" y1="16" x2="12.01" y2="16"/>
-        </svg>
-        <p>Reader mode is not available on<br>browser or extension pages.</p>
-    </div>
+    <div class="toast" id="toast" hidden></div>
 
-    <!-- Toast notification -->
-    <div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
-
-    <script src="utils.js"></script>
     <script src="popup.js"></script>
 </body>
 </html>

@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "updated": "2026-04-30",
+  "description": "Hostnames known to load excessive ad networks or interstitials. Conservative list - false positives are worse than misses here.",
+  "entries": [
+    { "host": "forbes.com", "match": "suffix" },
+    { "host": "dailymail.co.uk", "match": "suffix" },
+    { "host": "thesun.co.uk", "match": "suffix" },
+    { "host": "mirror.co.uk", "match": "suffix" },
+    { "host": "express.co.uk", "match": "suffix" },
+    { "host": "nypost.com", "match": "suffix" },
+    { "host": "tmz.com", "match": "suffix" },
+    { "host": "ibtimes.com", "match": "suffix" },
+    { "host": "msn.com", "match": "suffix" },
+    { "host": "yahoo.com", "match": "suffix" },
+    { "host": "buzzfeed.com", "match": "suffix" },
+    { "host": "huffpost.com", "match": "suffix" },
+    { "host": "answers.com", "match": "suffix" },
+    { "host": "ehow.com", "match": "suffix" }
+  ]
+}
