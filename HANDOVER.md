@@ -90,18 +90,15 @@ The `readerSites` array is stored in `chrome.storage.sync`, meaning it syncs acr
 
 ## Testing checklist
 
-- [ ] Load unpacked in Chrome — popup opens, shows correct domain
-- [ ] Load unpacked in Edge — popup opens, shows correct domain
-- [ ] Add a site in Chrome — overlay appears on next visit
-- [ ] Add a site in Edge — navigates to read:// on next visit
-- [ ] Manual "Open Reader Mode" button works in Chrome
-- [ ] Manual "Open Reader Mode" button works in Edge
-- [ ] Exit via Esc key (Chrome overlay)
-- [ ] Exit via Alt+R (Chrome overlay)
-- [ ] Exit via "Exit Reader Mode" button in popup
-- [ ] Remove site — site removed from list, toggle reflects new state
-- [ ] Open popup on `chrome://newtab` — unavailable state shown
-- [ ] Dark mode OS preference — Chrome overlay uses dark colours
+> **This document describes v1.2 and the code is v2.0.** `src/manifest.json` says 2.0, Readability
+> and the MutationObserver named as future improvements above are both shipped, and the file map in
+> this handover predates `src/content/`, `src/data/`, `src/lib/` and the options page. Card 0002
+> owes the rewrite. Read [PRD.md](PRD.md) for what v2 is meant to do.
+
+The queue is [docs/board/todo/](docs/board/todo/) and what waits on a person is
+[docs/board/human-review/](docs/board/human-review/). The twelve manual checks that used to be
+listed here are the eighth criterion of the v2 acceptance pass, card 0001, alongside the seven
+PRD criteria that no version of this checklist covered.
 
 ---
 
