@@ -1,9 +1,10 @@
 # Run the v2 acceptance pass
 
 ## What I need from you
-Load the unpacked extension and work through the eight criteria in
-[PRD.md section 11](../../../PRD.md), which need a real browser and real sites. The ones most
-likely to fail, and what a failure means:
+
+**Run the eight v2 acceptance criteria in a real browser and record a verdict for each.** Load the
+unpacked extension and work through [PRD.md section 11](../../../PRD.md). The ones most likely to
+fail, and what a failure means:
 
 1. **Edge, curated paywall host.** Pass: the URL becomes `read://https_<host>/?url=...`. Fail: the
    inline overlay appears instead, which means the Edge branch did not take and every Edge user
@@ -22,8 +23,17 @@ likely to fail, and what a failure means:
    failing silently.
 8. The twelve-item manual checklist that was in the handover, now card 0002's to relocate.
 
-Report which numbers passed. A number with no verdict is more useful than a blanket "seems fine",
-because it says where to look next.
+**Pass** is eight verdicts, one per criterion, recorded here under `## Direction`.
+
+**Fail** is a blanket "seems fine". Report the numbers instead, because a named failure says where
+to look next and each one earns its own card. Criterion 5 matters most: a trigger on a non-listed
+host is the failure that wrecks ordinary browsing, and it is the one you will not notice unless you
+go looking for it.
+
+**Why it needs you** All eight need a real browser on real sites, two of them Edge specifically, and
+one needs a live paywalled host. Nothing anywhere records that any of this has been run since the
+rewrite was committed on 2026-04-30, so the extension has been sitting at version 2.0 unverified for
+three and a half months.
 
 ## Why
 `src/manifest.json` says version 2.0 and the rewrite was committed on 2026-04-30 with Readability

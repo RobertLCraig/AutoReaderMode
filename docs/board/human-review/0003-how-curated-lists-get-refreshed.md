@@ -1,11 +1,23 @@
 # How the curated lists get refreshed
 
 ## What I need from you
-Pick 1, 2 or 3. It decides whether the extension ever makes a network request, which is the
-difference between a store listing that needs a privacy notice and one that does not.
 
-The PRD already recommends option 1 for v2. If you agree, say "1" and this closes; it is on the
-board because shipping a store listing on an unconfirmed privacy position is the wrong order.
+**Pick 1, 2 or 3 below.** It decides whether the extension ever makes a network request, which is
+the difference between a store listing that needs a privacy notice and one that does not.
+
+My recommendation is **3**, which is the PRD's own option 1 with the escape hatch that is already
+built named alongside it.
+
+**Pass** is a number in this card. Agreeing with the PRD is a complete answer: say "3" and this
+closes with no work attached.
+
+**Fail** is deferring it until submission. The answer changes both the permissions the extension
+asks for and the privacy notice on the listing, so settling it afterwards means rewriting the
+listing rather than writing it once.
+
+**Why it needs you** It is a privacy position rather than a technical call, and it is the one entry
+in the PRD's risk table left open rather than mitigated. Shipping a store listing on an unconfirmed
+privacy position is the wrong order, which is why it is on the board rather than assumed.
 
 ## Why
 `src/data/paywalls.json` and `src/data/ad-heavy.json` are the curated lists, and the PRD names
