@@ -47,3 +47,6 @@ Option 2 is the one to avoid at this size. It buys freshness for a list of a few
 costs a permission, a privacy notice and a server that has to outlive interest in the project.
 
 ## Decided
+
+
+**2026-08-16** 3
