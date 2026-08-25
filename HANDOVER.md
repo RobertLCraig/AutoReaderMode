@@ -1,5 +1,7 @@
 # Handover Notes — Auto Reader Mode
 
+**Category:** tool
+
 ## Project summary
 
 A Manifest V3 browser extension. When the user navigates to a site they have enabled, the extension triggers reader mode automatically:
