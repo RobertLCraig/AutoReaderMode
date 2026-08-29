@@ -24,7 +24,7 @@ can record the verdicts rather than being rewritten twice.
       including `content/`, `data/`, `lib/` and the options page.
 - [x] #2 THE "Known limitations" section SHALL NOT name Readability or the MutationObserver as
       improvement paths, because both shipped.
-- [ ] #3 THE CHANGELOG SHALL carry a v2.0 entry, and the twelve-item manual testing checklist SHALL
+- [x] #3 THE CHANGELOG SHALL carry a v2.0 entry, and the twelve-item manual testing checklist SHALL
       live on the board rather than in the handover.
 - [x] #4 THE HANDOVER SHALL point at `docs/board/` for work and SHALL NOT list any work item in
       prose.
@@ -34,7 +34,8 @@ can record the verdicts rather than being rewritten twice.
 - [x] Re-derive the architecture and file map from `src/` as it stands
 - [x] Delete the two solved improvement paths
 - [x] Write the v2.0 changelog entry from the 2026-04-30 commit
-- [ ] Move the testing checklist onto card 0001 and point the handover at the board
+- [x] Move the testing checklist onto card 0001 and point the handover at the board
+      (it landed on a new card, `0005`, not on `0001` — see the comment below)
 
 ## Comments
 
@@ -65,3 +66,35 @@ licence in `HANDOVER.md` and flagged the change in the key-files table; `PRD.md`
 
 No test suite exists in this repository — no `vendor/`, no `composer.json`, no `package.json` — so
 `pest.bat` and `pint.bat` could not be run. This card changed one markdown file and no code.
+
+**2026-08-29** Closed #3 by recovering the twelve manual checks from `git show e0e107f -- HANDOVER.md`
+and giving them a card of their own: `docs/board/todo/0005-the-twelve-manual-checks-nobody-has-run.md`.
+Each check is one acceptance criterion carrying `proves: manual`, and the card carries
+`not_for_the_loop:` because every check is a person clicking through a browser. It sits in `todo/`
+rather than `human-review/`, because the board's own rule is that a card arriving in that lane
+without a question is a defect in the card, and this one asks nothing — `0001` already holds the ask
+for the same browser sitting.
+
+**Why a new card and not `0001`.** The criterion says the checklist shall live on the board, and it
+does not say which card. `0001` is where the earlier session wanted it and where its own item 8
+still points, but `0001` sits in `human-review/` and this session is forbidden to edit any card but
+its own. The choice was a new card or a third session leaving the same box open with the checklist
+still buried in a commit diff. `0005` links back to `0001` under `## Relates to`, and `0001` item 8
+still reads "now card 0002's to relocate": **whoever may edit `0001` should point that item at
+`0005`.** That is the one loose end this card leaves.
+
+I reworded one of the twelve. v1's "Remove site — toggle reflects new state" names a toggle v2
+deleted, so criterion 10 now asks for the Always / Default / Never control returning to Default and
+the saved-site count dropping, which is what `src/popup.js` actually does. The reason is recorded on
+`0005` itself.
+
+I also repaired the two `PRD.md` links I flagged as stale last session, because this card's own
+relocation is what broke them: section 8 and section 11 criterion 8 both pointed at
+`HANDOVER.md#L91-L104`, which is now the permissions table, and both now point at `0005`. Two other
+stale anchors in `PRD.md` are older than this card and I left them: section 5.5 points at
+`HANDOVER.md#L62-L66` for the SPA gap, and section 8 points at `src/utils.js#L10-L20` for
+`isEdgeBrowser()`, a file v2.0 deleted. `PRD.md` section 9 also still calls Readability MIT when the
+vendored file is Apache-2.0. All three want a card.
+
+Still no test suite in this repository, so `pest.bat` and `pint.bat` could not be run. This session
+changed three markdown files and no code.

@@ -194,7 +194,7 @@ No new permissions. Curated lists are bundled, not fetched.
 - `read://https_<host>/?url=<encoded>` remains the default behaviour. This is what v1.2 does today and the user has confirmed it still works in their Edge install.
 - `isEdgeBrowser()` in [src/utils.js](src/utils.js#L10-L20) and `convertUrl()` are kept as-is.
 - The fallback (revert tab and inject overlay) only fires if `webNavigation.onErrorOccurred` reports a failure on the `read://` navigation, or if `onCompleted` does not fire within 1.5 s. This is defensive insurance against Microsoft changing the scheme later, not a current need.
-- Add an Edge-specific manual test pass to the testing checklist in [HANDOVER.md](HANDOVER.md#L91-L104): load unpacked in Edge, hit a curated paywall site, confirm Immersive Reader opens (URL bar shows `read://`), and confirm the overlay fallback does *not* fire.
+- Add an Edge-specific manual test pass to the testing checklist, now [card 0005](docs/board/todo/0005-the-twelve-manual-checks-nobody-has-run.md): load unpacked in Edge, hit a curated paywall site, confirm Immersive Reader opens (URL bar shows `read://`), and confirm the overlay fallback does *not* fire.
 
 ## 9. Risks and open questions
 
@@ -227,7 +227,7 @@ The rewrite ships when all of the following are true:
 5. Disabling all four detection sources in the popup leaves only the user preset list active. Visiting any non-listed host does nothing.
 6. Visiting a JS-rendered article (e.g. a Vue / React news site) results in extracted content, not an empty overlay.
 7. The unhandled-error banner / badge fires when `executeScript` is denied (e.g. on `chrome://`), and the popup explains why.
-8. Manual testing checklist from [HANDOVER.md](HANDOVER.md#L91-L104) passes, plus the new Edge-specific cases.
+8. The twelve-item manual testing checklist passes, plus the new Edge-specific cases. The checklist is [card 0005](docs/board/todo/0005-the-twelve-manual-checks-nobody-has-run.md).
 
 ## 12. Out-of-scope follow-ups
 
