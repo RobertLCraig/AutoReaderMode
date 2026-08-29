@@ -45,29 +45,29 @@ everything the card knows and changes only how it is ordered and said. `## Direc
 
 ## Acceptance
 <!-- AC:BEGIN -->
-- [ ] #1 WHEN a card in a non-terminal lane is rewritten, THE CARD SHALL state the problem in
+- [x] #1 WHEN a card in a non-terminal lane is rewritten, THE CARD SHALL state the problem in
       `## Why` before any solution appears anywhere in it. proves: none - about prose, and no check
       here reads prose
-- [ ] #2 WHEN a rewritten card is a decision, THE CARD SHALL say which of the four reasons makes it
+- [x] #2 WHEN a rewritten card is a decision, THE CARD SHALL say which of the four reasons makes it
       a person's to answer, or SHALL be converted to a feature card whose `## Plan` records the
       practice applied and its source. proves: none - the command that counts it is in another
       repository, named in `## Plan`
-- [ ] #3 WHEN a rewritten card names another card, THE CARD SHALL name it in a `## Links` section
+- [x] #3 WHEN a rewritten card names another card, THE CARD SHALL name it in a `## Links` section
       with the relationship type and one line of why, and SHALL NOT leave a bare card number in a
       sentence as the only mention of it. proves: none - as #2
-- [ ] #4 THE `Blocked by` LINES on every rewritten card SHALL match that card's `needs:` frontmatter
+- [x] #4 THE `Blocked by` LINES on every rewritten card SHALL match that card's `needs:` frontmatter
       exactly, in both directions. proves: none - as #2
-- [ ] #5 THE REWRITE SHALL preserve every measurement, date and decision the card already carried,
+- [x] #5 THE REWRITE SHALL preserve every measurement, date and decision the card already carried,
       and SHALL NOT edit `## Direction` or `## Decided`. proves: none - as #2
-- [ ] #6 WHEN this board's rewrite is finished, THE BOARD SHALL report zero open cards failing the
+- [x] #6 WHEN this board's rewrite is finished, THE BOARD SHALL report zero open cards failing the
       checks. proves: none - as #2
 <!-- AC:END -->
 
 ## Tasks
-- [ ] Read the count, and write it into `## Direction` before changing anything
-- [ ] Rewrite `human-review/` first, then `todo/`, `in-progress/` and `ai-review/`
-- [ ] For each decision card, apply the four-reason test and convert the ones that fail it
-- [ ] Read the count again and write into `## Direction` what changed, counted by rule
+- [x] Read the count, and write it into `## Direction` before changing anything
+- [x] Rewrite `human-review/` first, then `todo/`, `in-progress/` and `ai-review/`
+- [x] For each decision card, apply the four-reason test and convert the ones that fail it
+- [x] Read the count again and write into `## Direction` what changed, counted by rule
 
 ## Plan
 **Where to stand.** This repository, on whatever branch the session was given. Nothing outside it is
@@ -98,3 +98,57 @@ cards merely rewritten - that is the change that gives him evenings back.
 **If the board is too big for one session, stop cleanly.** Tick nothing, write the count you reached
 into `## Direction`, and leave the card where it is; the next session carries on from that entry. A
 part-rewritten board is normal. A card ticked off a board that is not at 0 is not.
+
+## Comments
+
+**2026-08-29** The board is at 0. `board:convention --path=$PWD` read **2 of 5 open cards failing**
+before any edit and **0 of 5** after. Both failures were the same rule, the link rule: `0001` said
+"now card 0002's to relocate" and `0002` said "That is card 0001", each a bare number in a sentence
+with no `## Links` section to say why the reader should care. No card failed on `Blocked by` versus
+`needs:`, on a reasonless link, on a missing reason-it-is-yours, or on an unreadable `proves:`. This
+board carries no `needs:` and no `Blocked by` line at all, so #4 held before I started and still
+holds. Nothing in `ai-review/` - that lane is empty.
+
+**What I changed, card by card.** `0001` gained a `## Links` section naming `0002` and `0005` with a
+line of why each, a `## Why` that now says what it costs and how it came about instead of only what
+is wrong, and a `## Comments` heading, because two places in it told the reader to record verdicts
+"under `## Direction`" and the card had no such section. Its item 8 pointed at `0002` for the twelve
+manual checks; they landed on `0005`, so it points there now. `0002` gained the `## What I need from
+you` section its lane requires and did not have - the ask was buried 149 lines down in the thread, in
+the loop's own words - plus `## Links` and one sentence in `## Why` saying how the drift happened.
+`0003` had the two candidate answers written into its `## Why`, which is the fault this card exists
+to fix, so `## Why` now states the staleness problem and its cost and names no answer; the answers
+were already in `## Options` and are untouched. `0005` needed nothing and got nothing.
+
+**The four-reason test converted no card.** `0003` is the board's only decision. Its answer turns on
+the privacy position of a public store listing, which is a risk Rob carries and no reading settles -
+row three of the four - so it stays a decision and now says that in as many words. It was already
+answered `**2026-08-16** 3`, and I did not touch `## Decided`, `## Direction` or any `## Comments`
+entry on any card.
+
+**What I assumed, and it is the one thing to check.** Criterion #1 says the problem comes "before any
+solution appears anywhere in it". On the two `human-review/` cards the ask stands above `## Why`,
+because `docs/board/README.md` requires `## What I need from you` directly under the title and this
+card forbids changing the convention. I read #1 as governing `## Why` itself - no fix named in it -
+which is how the README states the same rule. If the stricter reading was meant, #1 is unmet on
+`0001` and `0002` and the two rules cannot both be obeyed.
+
+**Three things I left, deliberately, and each wants a card.** `0001` carries no `not_for_the_loop:`
+although all eight of its criteria are a person in a browser; adding a frontmatter key changes what
+the unattended loop may take, which is a behaviour change and not a rewrite. `0001`'s three
+acceptance criteria name no `proves:` at all, which the convention wants; adding `proves: manual`
+puts the word "browser" into `## Acceptance`, where the outward-effect check reads, so it would newly
+flag the card unless `not_for_the_loop:` went on at the same time. The two belong on one card
+together. And `0002`'s `## Why` still describes `HANDOVER.md` as stale when it was rewritten on
+2026-08-29; that is the problem the card was raised for and criterion #5 forbids dropping what a card
+knows, so the tense stays.
+
+**No suite ran, and that is not a pass.** This repository has no `vendor/`, no `composer.json` and no
+`package.json`, so `.\vendor\bin\pest.bat` and `.\vendor\bin\pint.bat` do not exist here. Nothing in
+this session touched code; five markdown files changed and no JavaScript did. Nothing needs a browser
+check.
+
+**This entry is under `## Comments`, not `## Direction`.** The card's own tasks name `## Direction`
+and the card had neither heading. `docs/board/README.md` says new entries go under `## Comments` and
+that the old headings are still read, so opening a second thread would have been the worse of the
+two.

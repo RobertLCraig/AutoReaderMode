@@ -1,5 +1,31 @@
 # The handover still describes v1.2 on a v2.0 codebase
 
+## What I need from you
+
+**Two answers.**
+
+1. Untick criterion #1, so this card can go back to `todo/` and be finished? Yes / no.
+2. Should the four documentation faults found outside this card get cards of their own? Yes / no.
+
+---
+
+**On 1.** The reviewer checked all four boxes against the real files on 2026-08-29 and disproved
+one. `src/icons/` exists, holds three PNGs and is named by `src/manifest.json`, and neither the
+architecture tree nor the key-files table in `HANDOVER.md` mentions it. A reviewing agent may not
+edit acceptance, so the card came back with all four still ticked, and every session since has
+opened it and found nothing to do. Pass is #1 unticked. Fail is leaving the boxes alone, which
+sends the card round the same loop again. The fix itself is one line naming `icons/`.
+
+**On 2.** The reviewer named four faults in files this card's acceptance never covered. `AGENT.md`
+still tells an agent to bundle Readability and puts `isEdgeBrowser()` in `utils.js`, a file v2.0
+deleted. `README.md` carries the same v1 tree. `PRD.md` section 5.5 points at `HANDOVER.md#L62-L66`,
+which is now the permissions table. `PRD.md` section 9 calls the vendored Readability MIT when its
+own header says Apache-2.0. None is on a card, and `HANDOVER.md` says every outstanding item is one.
+Pass is yes or no. Fail is leaving them in a comment, where nobody sweeps them.
+
+**Why it needs you** Unticking a criterion is the one edit no reviewing agent may make, and how many
+cards this board carries for stale documentation is a call about where your attention goes.
+
 ## Why
 `HANDOVER.md` documents a three-file architecture (`background.js`, `utils.js`, `reader.js`), lists
 its changelog as "v1.2 (current)", and carries a "Known limitations" section whose two improvement
@@ -13,6 +39,16 @@ The tree it describes no longer exists either: `src/` now holds `content/`, `dat
 
 An agent reading this would set out to build two things that are done, using a file map that is
 wrong, and would never find the actual outstanding work, which is that none of v2 has been verified.
+
+Nobody decided to leave the handover behind. The v2.0 rewrite landed on 2026-04-30 and the document
+describing it was never part of that commit.
+
+## Links
+
+**Relates to**
+- `0001` - the acceptance pass this card should land behind, so the handover can record its eight
+  verdicts instead of being rewritten twice.
+- `0005` - where the twelve manual checks went when this card took them out of the handover.
 
 ## Not this card
 Running the acceptance pass. That is card 0001, and this card should land after it so the handover
