@@ -21,9 +21,10 @@ fail, and what a failure means:
    MutationObserver exists for.
 7. **A `chrome://` page.** Pass: the error banner fires and the popup explains why, rather than
    failing silently.
-8. The twelve-item manual checklist that was in the handover, now card 0002's to relocate.
+8. The twelve-item manual checklist that was in the handover. It now has a card of its own, `0005`,
+   listed under `## Links` below, so work it from there in this same sitting.
 
-**Pass** is eight verdicts, one per criterion, recorded here under `## Direction`.
+**Pass** is eight verdicts, one per criterion, recorded here under `## Comments`.
 
 **Fail** is a blanket "seems fine". Report the numbers instead, because a named failure says where
 to look next and each one earns its own card. Criterion 5 matters most: a trigger on a non-listed
@@ -36,12 +37,25 @@ rewrite was committed on 2026-04-30, so the extension has been sitting at versio
 three and a half months.
 
 ## Why
-`src/manifest.json` says version 2.0 and the rewrite was committed on 2026-04-30 with Readability
-bundled, a MutationObserver in `reader.js` and both curated lists in `src/data/`. Nothing anywhere
-records that any of it has been run.
+**Nobody has ever seen v2 work.** `src/manifest.json` says version 2.0 and the rewrite was committed
+on 2026-04-30 with Readability bundled, a MutationObserver in `reader.js` and both curated lists in
+`src/data/`. Nothing anywhere in this repository records that any of it has been run in a browser.
 
-The PRD says the rewrite "ships when all of the following are true". It has not shipped, and the
-eight criteria are the only thing standing between the code and calling it done.
+**What it costs.** The PRD says the rewrite "ships when all of the following are true", so the
+extension cannot be released to anybody while its eight criteria are unrecorded. It has sat at
+version 2.0, unverified, since 2026-04-30. Nothing else on this board can be trusted either: every
+later card reasons about behaviour that has only ever been read off the source.
+
+**How it came to be this way.** The rewrite was committed and the verification was never scheduled.
+Nobody decided to skip it.
+
+## Links
+
+**Relates to**
+- `0002` - it rewrote `HANDOVER.md` against the v2 source, so the file describing the code you are
+  about to exercise is current, and its own reviewer says one gap is left in it.
+- `0005` - the twelve hand-run checks that are criterion 8 of this card. They need the same two
+  browsers loaded, so run both cards in one sitting.
 
 ## Not this card
 Fixing whatever fails. Each failure earns its own card, because a single card called "fix v2" is
@@ -58,4 +72,6 @@ one nobody can finish.
 ## Tasks
 - [ ] Load unpacked in Edge stable, run criteria 1 and 3
 - [ ] Load unpacked in Chrome stable, run criteria 2, 4, 5, 6, 7
-- [ ] Record each verdict here under Direction
+- [ ] Record each verdict here under `## Comments`, one dated line per criterion
+
+## Comments

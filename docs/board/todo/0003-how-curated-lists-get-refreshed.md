@@ -15,16 +15,25 @@ closes with no work attached.
 asks for and the privacy notice on the listing, so settling it afterwards means rewriting the
 listing rather than writing it once.
 
-**Why it needs you** It is a privacy position rather than a technical call, and it is the one entry
-in the PRD's risk table left open rather than mitigated. Shipping a store listing on an unconfirmed
-privacy position is the wrong order, which is why it is on the board rather than assumed.
+**Why it needs you** This is **a risk you own**, which is one of the four things that make an answer
+a person's rather than an agent's. The privacy position on a public store listing is yours to stand
+behind, and no amount of reading settles it. It is also the one entry in the PRD's risk table left
+open rather than mitigated, and shipping a listing on an unconfirmed privacy position is the wrong
+order.
 
 ## Why
-`src/data/paywalls.json` and `src/data/ad-heavy.json` are the curated lists, and the PRD names
-their going stale as a risk with an open question attached: fetch them remotely, or update them
-only when a release ships. It is the one question in the PRD's risk table that was left open rather
-than mitigated, and it has to be settled before the extension is submitted anywhere, because the
-answer changes both the permissions and the privacy notice.
+**The two curated lists go stale and nothing says how they are kept current.**
+`src/data/paywalls.json` and `src/data/ad-heavy.json` are bundled inside the extension. A site that
+starts putting up a paywall stays undetected until somebody edits those files, and nothing anywhere
+records who does that or when.
+
+**What it costs.** The answer changes the permissions the extension asks for and the privacy notice
+on the store listing, so a listing written before it is settled has to be rewritten. It is also the
+one entry in the PRD's risk table left open rather than mitigated, and no submission can go out with
+it open.
+
+**How it came to be this way.** The PRD raised it as an open question and nothing since has forced
+it, because the extension has never been submitted anywhere.
 
 ## Options
 1. **Release-bound.** The lists ship inside the extension and change only when a new version does.
