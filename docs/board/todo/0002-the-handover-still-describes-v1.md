@@ -98,3 +98,50 @@ vendored file is Apache-2.0. All three want a card.
 
 Still no test suite in this repository, so `pest.bat` and `pint.bat` could not be run. This session
 changed three markdown files and no code.
+
+### 2026-08-29 review (v20260829153634-30f9)
+
+**suite**
+
+No suite this job could find in AutoReaderMode, so none ran. That is not a pass.
+
+**acceptance: defect**
+
+I checked each box against the real files.
+
+**#1 ÔÇö mostly true, one gap.** `HANDOVER.md` "Architecture" and "Key files" match `src/` for `background.js`, `popup`, `options`, `content/` (`readability.js`, `detect.js`, `reader.js`), `data/` (28 + 14 entries, confirmed in `src/data/paywalls.json` and `src/data/ad-heavy.json`) and `lib/` (`matcher.js`, `settings.js`, `triggers.js`, loaded by the `importScripts` call in `src/background.js`). The precedence list matches `decideTrigger` in `src/lib/triggers.js`. But `src/icons/` exists, holds three PNGs, and is used by `src/manifest.json` (`action.default_icon` and `icons`). Neither the tree nor the key-files table names it, so the tree it presents as the whole of `src/` is not the whole of `src/`.
+
+**#2 ÔÇö true.** "Known limitations" names no improvement path. Readability appears only as current behaviour, matching `tryReadability` in `src/content/reader.js`. The MutationObserver is absent there and matches `SPA_MAX_WAIT_MS` in the same file.
+
+**#3 ÔÇö true.** The v2.0 changelog entry is there. The twelve checks are on the board at `docs/board/todo/0005-the-twelve-manual-checks-nobody-has-run.md`.
+
+**#4 ÔÇö true.** "Where the work is" points at the four lanes and lists no work item.
+
+One line to add: `icons/`.
+
+VERDICT: defect
+
+**scope: defect**
+
+**Over the fence.** `PRD.md` is not this card's file. Its section 11, criterion 8 was rewritten, and section 11 *is* the acceptance pass ÔÇö the one thing `## Not this card` fences off. The section 8 Edge-test bullet was edited too. The card's acceptance names `HANDOVER.md` and the board only.
+
+**Half done ÔÇö the relocation.** Item 8 of `docs/board/human-review/0001-v2-acceptance-pass.md` still reads "now card 0002's to relocate". The checks now live on `0005`. So the board holds one stale pointer and two homes for the same twelve checks. AC#3 is ticked over that gap, and the card's own comment admits it.
+
+**Grew ÔÇö the licence.** The key-files row for `src/content/readability.js` in `HANDOVER.md` now says Apache-2.0. That is correct; the file header says Apache-2.0. But the Readability injection bullet in `PRD.md` still says "MIT licensed". No criterion asked for a licence audit, one was started, and it stopped halfway with no card raised.
+
+**Grew ÔÇö a check was rewritten.** Criterion #10 on `0005` is new wording, not the moved "Remove site ÔÇö toggle reflects new state". Defensible, but the task said move.
+
+VERDICT: defect
+
+**breakage: defect**
+
+**Findings (breakage lens)**
+
+1. **`AGENT.md`, "Improving Chrome extraction" and the `isEdgeBrowser()` section.** AC #2 deleted the two solved improvement paths from `HANDOVER.md`, but `AGENT.md` still tells an agent to "Consider bundling Mozilla ReadabilityÔÇª add `readability.js` to `src/`", still says `extractArticleElement()` lives in `reader.js`, and still says `isEdgeBrowser()` is in `utils.js`. `AGENT.md` is the agent-facing rules file, so the exact failure the card exists to stop still happens. `README.md`'s structure and permissions tables carry the same v1 tree. No card covers either.
+
+2. **`PRD.md` section 5.5.** `HANDOVER.md#L62-L66` was the SPA-gap paragraph at commit `134be3a` and is the key-files table now. This rewrite broke it, the same way it broke the two anchors the session repaired. The card comment says it is "older than this card". It is not.
+
+3. **`HANDOVER.md`, "Where the work is".** It asserts every outstanding item is a card. Three the session itself found (two stale anchors, the MIT/Apache-2.0 clash in `PRD.md` section 9) are on no card ÔÇö only in a comment on `0002`.
+
+VERDICT: defect
+
