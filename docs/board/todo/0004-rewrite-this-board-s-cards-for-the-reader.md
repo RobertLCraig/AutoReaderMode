@@ -152,3 +152,58 @@ check.
 and the card had neither heading. `docs/board/README.md` says new entries go under `## Comments` and
 that the old headings are still read, so opening a second thread would have been the worse of the
 two.
+
+### 2026-08-29 review (v20260829170140-96a1)
+
+**suite**
+
+No suite this job could find in AutoReaderMode, so none ran. That is not a pass.
+
+**acceptance: sound**
+
+I checked each criterion against the files.
+
+**#1** ÔÇö `## Why` in `human-review/0001-v2-acceptance-pass.md`, `human-review/0002-the-handover-still-describes-v1.md` and `todo/0003-how-curated-lists-get-refreshed.md` each now open with the problem and name no fix. `0003`'s `## Why` no longer carries the two candidate answers; they stay in its `## Options`. The strict reading the builder flagged fails, but the README's own `### Worked example` under `## The one section a card in human-review/ must have` puts the ask and its commands above `## Why`, so the builder's reading is the convention's. Met.
+
+**#2** ÔÇö `0003` is the only card with `## Options`, so the only decision. Its `## What I need from you` names "a risk you own", row three of the table in README `## Is this actually a person's to decide?`. Met.
+
+**#3** ÔÇö `## Links` sections exist on `0001`, `0002`, `0005`, each with `**Relates to**` and one line of reason. Every card number in prose also appears there. Met.
+
+**#4** ÔÇö no `needs:` and no `Blocked by` anywhere in `docs/board/`. Vacuously met.
+
+**#5** ÔÇö the `e5206b4` diff drops no date or measurement; `0003`'s `## Decided` is untouched.
+
+**#6** ÔÇö I ran `board:convention --path=C:\Dev\AutoReaderMode`: `0` of `5`. Met.
+
+VERDICT: sound
+
+**scope: defect**
+
+I read the diff for `e5206b4` and every open card.
+
+**1. Grew ÔÇö a new question was put in front of Rob.**
+`docs/board/human-review/0002-the-handover-still-describes-v1.md`, `## What I need from you`, ask 2 ("Should the four documentation faults get cards of their own?"). No earlier entry on that card asks it. The loop's return entry asks one thing only: untick #1, or say why the finding is wrong. `docs/board/README.md`, `## Is this actually a person's to decide?`, says a person owns an answer only for a preference, a cost, a risk or local knowledge. This is none of those. The same section of the same card quotes `HANDOVER.md` saying every outstanding item is a card ÔÇö so reading settles it. Card 0004's `## Why` names this exact fault. A rewrite card added a fresh instance of it.
+
+**2. Half done ÔÇö the count was never written where the card says.**
+`docs/board/ai-review/0004-...`, `## Tasks`: both tasks name `## Direction`. Nothing was written there. One commit holds the edits and the report, so no "before" record exists apart from the "after". Both boxes are ticked.
+
+**3.** That same `## Comments` says "five markdown files changed". The commit changed four.
+
+VERDICT: defect
+
+**breakage: defect**
+
+**Finding ÔÇö the ask on `0002` under-counts, and the missing fault stays missing.**
+
+File: `docs/board/human-review/0002-the-handover-still-describes-v1.md`, section `## What I need from you`, question 2.
+
+It asks Rob to approve cards for "the four documentation faults found outside this card", then names four: `AGENT.md`, `README.md`, `PRD.md` section 5.5, `PRD.md` section 9.
+
+The same card's `## Comments` records five. The builder entry says: "section 8 points at `src/utils.js#L10-L20` for `isEdgeBrowser()`, a file v2.0 deletedÔÇª All three want a card." That fifth fault is real and still live: `src/` has no `utils.js` (checked: `background.js`, `content`, `data`, `icons`, `lib`, `options.*`, `popup.*`, `manifest.json`), while `PRD.md` section 8 and section 5 both link to `src/utils.js`.
+
+So the summary contradicts the thread it summarises. A person who answers "yes" raises four cards, and the dead `src/utils.js` link is dropped with no record that it was dropped. That is the failure this rewrite exists to prevent: the reader trusts the top of the card and never reaches the comment 140 lines down.
+
+Everything else held. Links are reciprocal, `## Decided` untouched, no `needs:` anywhere, `icons/` gap still real.
+
+VERDICT: defect
+
