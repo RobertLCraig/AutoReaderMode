@@ -21,10 +21,27 @@ Any other passage in `AGENT.md`, any other document, and any change to the code.
 
 ## Acceptance
 <!-- AC:BEGIN -->
-- [ ] #1 `AGENT.md` SHALL NOT name `getSites()` or `setSites()`, and SHALL point a site-management
+- [x] #1 `AGENT.md` SHALL NOT name `getSites()` or `setSites()`, and SHALL point a site-management
       change at the file that holds the site list now. proves: none - no suite in this repository
       reads prose
 <!-- AC:END -->
 
 ## Tasks
-- [ ] Read `src/popup.js` and `src/options.js` and rewrite the passage to match
+- [x] Read `src/popup.js` and `src/options.js` and rewrite the passage to match
+
+## Comments
+
+**2026-09-28** RESULT: done
+TESTS: +0 new, none runnable (criterion is proves: none)
+TOUCHED: AGENT.md
+TOUCHED: docs/board/in-progress/0011-agent-md-names-popup-helpers-that-are-gone.md
+OUT-OF-SCOPE: none
+
+Rewrote `AGENT.md` line 41 only. It now sends a site-list change to `options.js` and names
+`renderSites()`, `addHostFromInput()`, `removeHost()` and its `syncGet()` / `syncSet()`, all checked
+against `src/options.js`. It says `popup.js` only sets the current site's rule through `setRule()`
+(checked at `src/popup.js:148`). `getSites` / `setSites` no longer appear outside the board.
+
+The session prompt asks for `.\vendor\bin\pest.bat` and `pint.bat`. This repository has no
+`composer.json`, no `vendor/` and no PHP; it is a browser extension with no automated suite, so
+neither was run. Nothing here needs a browser check: the change is prose only.
