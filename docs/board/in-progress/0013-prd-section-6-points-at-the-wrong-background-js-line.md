@@ -19,9 +19,24 @@ Any other link in `PRD.md`, and any change to the code.
 
 ## Acceptance
 <!-- AC:BEGIN -->
-- [ ] #1 `PRD.md` section 6 SHALL NOT link to a line number in `src/background.js`, and SHALL name
+- [x] #1 `PRD.md` section 6 SHALL NOT link to a line number in `src/background.js`, and SHALL name
       the file that holds the `importScripts` call. proves: none - no suite in this repository reads prose
 <!-- AC:END -->
 
 ## Tasks
-- [ ] Repoint the link at `src/background.js` by file rather than by line number
+- [x] Repoint the link at `src/background.js` by file rather than by line number
+
+## Comments
+
+**2026-09-28** RESULT: done
+TESTS: +0 new, no suite exists
+TOUCHED: PRD.md
+TOUCHED: docs/board/in-progress/0013-prd-section-6-points-at-the-wrong-background-js-line.md
+OUT-OF-SCOPE: none
+
+The one criterion is `proves: none`, so no test. `PRD.md` section 6 now links
+`[src/background.js](src/background.js)` with no `#L11` anchor. The link still names the file that
+holds the only `importScripts` call. No other `background.js#` anchor is left in `PRD.md`.
+
+`.\vendor\bin\pest.bat` and `pint.bat` could not run: this repository has no `composer.json`, so no
+`vendor/`. It is a plain JS extension with no test suite.

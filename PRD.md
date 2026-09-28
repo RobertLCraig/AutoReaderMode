@@ -167,7 +167,7 @@ onCompleted (top-level, http/https)
   -> detect.js: report signals back via chrome.runtime.sendMessage for the popup
 ```
 
-The classic `importScripts('utils.js')` setup in [src/background.js](src/background.js#L11) is replaced by a small `lib/` modular layout. Service worker stays non-module to avoid the cascade described in [AGENT.md](AGENT.md#L21-L22); we simply `importScripts('lib/matcher.js', 'lib/settings.js', 'lib/triggers.js')`.
+The classic `importScripts('utils.js')` setup in [src/background.js](src/background.js) is replaced by a small `lib/` modular layout. Service worker stays non-module to avoid the cascade described in [AGENT.md](AGENT.md#L21-L22); we simply `importScripts('lib/matcher.js', 'lib/settings.js', 'lib/triggers.js')`.
 
 ## 7. Manifest changes
 
