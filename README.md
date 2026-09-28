@@ -11,9 +11,10 @@ A Manifest V3 browser extension that **automatically activates reader mode** on 
 
 | Feature | Description |
 |---|---|
-| Auto-trigger | Automatically opens reader mode whenever you navigate to a site you've enabled |
+| Auto-trigger | Opens reader mode by itself when one of four sources fires: your own site list, a curated paywall list, a curated ad-heavy list, or in-page heuristics for paywall markers and ad density |
+| Per-site rule | Set any site to **Always**, **Default** or **Never** from the popup; Always and Never beat all four sources |
 | Manual toggle | One-click button in the popup to enter or exit reader mode on any page |
-| Site management | Add or remove sites from the auto-reader list at any time |
+| Options page | Turn each curated list and heuristic on or off, manage your site list, and disable, remove or restore single entries in the curated lists |
 | Dark mode | Reader overlay respects your OS dark-mode preference (Chrome) |
 | Keyboard shortcut | Press **Esc** or **Alt+R** to exit the reader overlay (Chrome) |
 | Cross-browser | Works in Edge (Immersive Reader) and Chrome/Chromium (inline overlay) |
@@ -46,11 +47,18 @@ See [INSTALL.md](INSTALL.md) for full step-by-step instructions.
 ## Usage
 
 1. **Navigate** to any web page you want to read.
-2. **Click the extension icon** in your browser toolbar to open the popup.
-3. **Flip the toggle** next to the current site's domain to enable auto reader mode for that site.
-   - Every future visit will open in reader mode automatically.
-4. Use the **Open Reader Mode** button to immediately view the current page in reader mode without adding the site to the auto list.
-5. **Remove** any site from the list by clicking the × button next to it.
+2. **Click the extension icon** in your browser toolbar to open the popup. It shows the current site's domain and whether reader mode fired on this tab, and why.
+3. Use the **Open Reader Mode** button to view the current page in reader mode now, without changing any rule.
+4. Under **Rule for this site**, pick one:
+   - **Always** — every visit opens in reader mode. The site is added to your site list.
+   - **Default** — the detection settings on the options page decide.
+   - **Never** — reader mode never opens by itself on this site.
+5. Click the **Settings** cog (or **Settings →** in the footer) to open the options page. There you can:
+   - Turn each detection source on or off: the curated paywall list, the curated ad-heavy list, the paywall heuristic and the ad-density heuristic.
+   - Click **manage** on a curated list to filter it, disable or remove single entries, and restore removed ones.
+   - Under **Your sites**, type a hostname and click **Add**, or click the × next to a site to remove it.
+
+The popup does not run on browser pages, extension pages or local files.
 
 ### Exiting reader mode (Chrome)
 
