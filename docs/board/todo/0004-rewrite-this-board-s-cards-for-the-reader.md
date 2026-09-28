@@ -61,6 +61,10 @@ everything the card knows and changes only how it is ordered and said. `## Direc
       and SHALL NOT edit `## Direction` or `## Decided`. proves: none - as #2
 - [x] #6 WHEN this board's rewrite is finished, THE BOARD SHALL report zero open cards failing the
       checks. proves: none - as #2
+- [ ] #7 NO rewritten card SHALL put a question to Rob that reading settles: `0002`'s ask 2, whether
+      the documentation faults get cards, SHALL be gone, and every fault its thread records SHALL be
+      on a card, all five, the dead `src/utils.js` link in `PRD.md` sections 5 and 8 included.
+      proves: none - as #2
 <!-- AC:END -->
 
 ## Tasks
@@ -209,3 +213,5 @@ VERDICT: defect
 
 
 **2026-08-29** The reviewer returned this card and its finding is the last review entry at the bottom of ## Direction. The loop moved it from todo/ to human-review/ because it has bounced 1 time between todo and ai-review, all 6 criteria ticked. THE BUILDER COULD NOT ACT ON THAT FINDING. A reviewer never unticks a criterion - it is forbidden from editing acceptance at all - so the card came back with 6 of 6 criteria still ticked, every session found nothing open to do, and the loop promoted it again on the boxes. Untick what the reviewer disproved and move it back to todo/, or say here why the finding is wrong.
+
+**2026-09-28** Manager pass: reopened with new criterion #7 because both the scope and breakage findings on `0002` still hold. Its `## What I need from you` still asks Rob, as ask 2, whether "the four documentation faults" should get cards. None of the four reasons in `docs/board/README.md` makes that his, and `HANDOVER.md` already says every outstanding item is a card. It also counts four when the thread records five: `src/utils.js` does not exist, yet `PRD.md` sections 5 and 8 still link to it. The ask sitting above `## Why` is the convention's placement and reopens nothing.
