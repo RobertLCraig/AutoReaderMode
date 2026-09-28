@@ -104,7 +104,7 @@ Two paths, branched on `isEdgeBrowser()` exactly as v1.2 does:
 3. **Fallback:** register a one-shot `webNavigation.onErrorOccurred` listener for that tab. If the `read://` navigation errors or times out (1.5 s without `onCompleted`), revert to the original URL and inject the overlay path instead. Log the fallback so the user sees why.
 
 **Chrome / Chromium path:**
-1. Inject `readability.js` (vendored, MIT licensed, ~50 KB) before `reader.js`.
+1. Inject `readability.js` (vendored, Apache-2.0 licensed, ~50 KB) before `reader.js`.
 2. `new Readability(document.cloneNode(true)).parse()` returns `{ title, byline, content, textContent, length, excerpt, siteName }`.
 3. Render `content` (already sanitised by Readability) inside the overlay body.
 4. Fall back to the v1 selector heuristic if Readability returns `null` (very short pages, non-articles).

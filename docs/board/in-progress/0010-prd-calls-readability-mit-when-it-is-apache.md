@@ -19,9 +19,24 @@ Any other licence question. The project's own licence in `LICENSE` and `README.m
 
 ## Acceptance
 <!-- AC:BEGIN -->
-- [ ] #1 `PRD.md` SHALL give the vendored Readability's licence as Apache-2.0, matching the header of
+- [x] #1 `PRD.md` SHALL give the vendored Readability's licence as Apache-2.0, matching the header of
       `src/content/readability.js`. proves: none - no suite in this repository reads prose
 <!-- AC:END -->
 
 ## Tasks
-- [ ] Correct the one phrase in section 5.4
+- [x] Correct the one phrase in section 5.4
+
+## Comments
+
+**2026-09-28**
+RESULT: done
+TESTS: +0 new - the one criterion is proves: none
+TOUCHED: PRD.md
+TOUCHED: docs/board/in-progress/0010-prd-calls-readability-mit-when-it-is-apache.md
+OUT-OF-SCOPE: none
+
+`PRD.md` line 107 now reads "vendored, Apache-2.0 licensed, ~50 KB", matching the Apache License 2.0
+header of `src/content/readability.js`. No other `.md` in the repository still calls it MIT; the
+remaining MIT line in `README.md` is the project's own licence. The instruction to run
+`.\vendor\bin\pest.bat` and `pint.bat` does not fit this repository: it is a browser extension with
+no `composer.json` and no `vendor/`, here or in `C:\Dev\AutoReaderMode`, so no suite was run.
