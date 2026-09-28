@@ -64,11 +64,22 @@ See [INSTALL.md](INSTALL.md) for full step-by-step instructions.
 ```
 src/
 ├── manifest.json     Extension metadata, permissions, and entry points
-├── background.js     Service worker — listens for navigation and auto-triggers reader mode
-├── utils.js          Shared helpers: browser detection, URL conversion
-├── reader.js         Content script — creates the inline reading overlay (Chrome)
+├── background.js     Service worker — listens for navigation, decides whether to trigger, injects or redirects
 ├── popup.html        Popup UI markup and styles
-├── popup.js          Popup logic — site management, manual toggle
+├── popup.js          Popup logic — current-tab status, trigger reason, manual toggle, per-site rule
+├── options.html      Options page markup
+├── options.js        Options logic — detection toggles, site list, curated-list management
+├── content/          Injected into the page (Chrome, and the Edge fallback)
+│   ├── readability.js    Vendored Mozilla Readability (Apache-2.0)
+│   ├── detect.js         Paywall and ad-density heuristics
+│   └── reader.js         Renders the inline reading overlay
+├── data/
+│   ├── paywalls.json     Curated list of paywall sites
+│   └── ad-heavy.json     Curated list of ad-heavy sites
+├── lib/              Loaded into the service worker with importScripts()
+│   ├── matcher.js        Hostname matching (exact or suffix)
+│   ├── settings.js       Settings defaults, cache, and curated-list loading
+│   └── triggers.js       decideTrigger(host) — which source, if any, fires
 └── icons/
     ├── icon16.png
     ├── icon48.png
@@ -81,11 +92,15 @@ src/
 
 ### Edge
 
-When you visit an enabled site, `background.js` intercepts the `webNavigation.onCompleted` event and calls `chrome.tabs.update` to navigate the tab to Edge's native `read://https_<domain>/?url=<encoded-url>` format. Edge's Immersive Reader takes over from there.
+On every top-level `webNavigation.onCompleted` event, `background.js` asks `lib/triggers.js` whether to fire. A per-site Always / Never rule wins; then your own site list, the curated paywall list, and the curated ad-heavy list. If none of them fire and a heuristic is enabled, the page is handed to the in-page heuristics instead.
+
+### Edge
+
+When a trigger fires, `background.js` calls `chrome.tabs.update` to navigate the tab to Edge's native `read://https_<domain>/?url=<encoded-url>` format, and Edge's Immersive Reader takes over. If that navigation errors (`webNavigation.onErrorOccurred`), the tab is reverted to the original URL and the Chrome overlay is injected instead.
 
 ### Chrome / Chromium
 
-`background.js` calls `chrome.scripting.executeScript` to inject `reader.js` into the page. The script extracts the main article content using a set of common CSS selectors (`article`, `[role="main"]`, `.post-content`, etc.), cleans out non-content elements (ads, navigation, sidebars), and renders everything in a full-screen styled overlay. Pressing Esc, Alt+R, or clicking "Exit Reader Mode" removes the overlay without navigating away.
+`background.js` first runs a small `chrome.scripting.executeScript` function that sets the trigger context on the page (`__ARM_TRIGGER_REASON`, `__ARM_DETECT_CONFIG`, `__ARM_REQUIRE_HEURISTIC`). It then injects `content/readability.js`, then `content/detect.js` (only when the heuristics must decide), then `content/reader.js`. When the heuristics decide, `reader.js` mounts only if `detect.js` says so. `reader.js` parses the page with Mozilla Readability, falls back to the v1 CSS selector heuristic when the result is shorter than 500 characters, and re-parses for up to 5 s while a single-page app settles. It renders the result in a full-screen overlay. Pressing Esc, Alt+R, or clicking "Exit Reader Mode" removes the overlay without navigating away.
 
 ---
 
@@ -101,12 +116,13 @@ When you visit an enabled site, `background.js` intercepts the `webNavigation.on
 
 | Permission | Why it's needed |
 |---|---|
-| `storage` | Persist the list of auto-reader sites across sessions |
-| `tabs` | Query the active tab URL; navigate Edge tabs to `read://` |
-| `scripting` | Inject `reader.js` into pages (Chrome) |
-| `webNavigation` | Detect when a page finishes loading to auto-trigger |
+| `storage` | Persist your site list, per-site rules and detection settings (`sync`); hold the per-tab trigger reason (`session`) |
+| `tabs` | Query the active tab URL; navigate Edge tabs to `read://` and back |
+| `scripting` | Inject the trigger context, `content/readability.js`, `content/detect.js` and `content/reader.js` into pages |
+| `webNavigation` | Detect when a page finishes loading to auto-trigger, and when a `read://` navigation errors for the Edge fallback |
 | `activeTab` | Allow popup-triggered script injection without broad host access for popup actions |
 | `host_permissions: https://*/*, http://*/*` | Required so the background service worker can inject scripts on any HTTP/HTTPS page |
+| `web_accessible_resources: data/paywalls.json, data/ad-heavy.json` | Exposes the two curated lists to pages; nothing else in the extension is exposed |
 
 ---
 
