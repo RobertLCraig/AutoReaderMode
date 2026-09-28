@@ -119,7 +119,7 @@ When the auto-trigger fires on `webNavigation.onCompleted`, `reader.js` does:
 2. If `length < 500` characters, register a `MutationObserver` on `document.body` and re-run Readability when the subtree settles (debounced 400 ms, max wait 5 s).
 3. Only mount the overlay once a parse with `length >= 500` succeeds, or after the timeout. On timeout with no parse, surface a toast (existing toast mechanism in popup.js) explaining nothing was extracted.
 
-This addresses the SPA gap called out in [HANDOVER.md](HANDOVER.md#L62-L66).
+This addresses the SPA gap the v1 handover called out. The v2.0 entry under [HANDOVER.md, Changelog](HANDOVER.md#changelog) records the fix.
 
 ### 5.6 Popup changes
 
