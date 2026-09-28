@@ -237,3 +237,61 @@ its own card. I re-checked each against the files today and all five are still l
 One correction the cards carry: the MIT claim is in `PRD.md` section 5.4, line 107, not section 9 as
 `0002`'s thread says. `0010` says so. `board:convention --path=$PWD` read 0 of 5 before and 0 of 10
 after. No browser check is needed; nothing but markdown changed.
+
+### 2026-09-28 review (v20260928190528-56e0)
+
+**suite**
+
+No suite this job could find in AutoReaderMode, so none ran. That is not a pass.
+
+**acceptance: sound**
+
+I found no defect. The work does what the acceptance criteria say.
+
+- **#7, part 1:** Ask 2 is gone from card `0002`. Its `## What I need from you` now asks one thing only: "Untick criterion #1". I searched `docs/board/` for "four documentation" and found no match.
+- **#7, part 2:** All five faults are now cards, and each fault is still real in the files:
+  - `0006`: `AGENT.md` still names `utils.js`.
+  - `0007`: `README.md` still shows the v1 file tree.
+  - `0008`: `PRD.md` section 5.5 links to the wrong lines of `HANDOVER.md`.
+  - `0009`: `PRD.md` still links to `src/utils.js`, which is gone, at 5.4 (`convertUrl()`) and section 8 (`isEdgeBrowser()`).
+  - `0010`: `PRD.md` 5.4 still says Readability is "MIT licensed". It is Apache-2.0.
+- **#7, part 3:** `0002` names all five under `## Links`, with one line of why for each.
+- **#1 to #6:** The earlier acceptance review found these sound. Nothing in the new work reopens them.
+
+One small note that disproves no criterion. `PRD.md` section 6 still has two old links: `src/background.js#L11` and `AGENT.md#L21-L22`. The thread on `0002` did not record them, so #7 does not cover them.
+
+VERDICT: sound
+
+**scope: sound**
+
+**Scope check: sound.** Nothing in this change went past what card 0004 asked for, and nothing is half done.
+
+- **What changed.** The last build commit (`5dfb1ce`) touched board cards only: card `0002`, card `0004`, and five new `todo/` cards, `0006` to `0010`. No code changed, and nothing in `done/` or `discarded/` changed.
+- **The new cards are allowed.** Criterion #7 says every fault on `0002` must be on a card, so making them was required. The builder only wrote the cards. The broken docs (`AGENT.md`, `README.md`, `PRD.md`) are still unfixed, and that is correct. Fixing them would have gone past the card's fence.
+- **No thread was edited.** In `0002`, only "What I need from you" (a summary above the thread) and `## Links` changed. Its `## Comments` thread was not touched. That matches criterion #5.
+- **The question to Rob is gone.** `0002` now asks one thing only: untick #1. It lists all five faults under `## Links`, including the dead `src/utils.js` link on `0009`.
+- **Old small issues are still there.** The tasks still say "write it into `## Direction`", and an old comment still says "five markdown files" when four changed. Neither one breaks a criterion.
+
+Everything I checked holds, so this does not reopen a criterion.
+
+VERDICT: sound
+
+**breakage: sound**
+
+I tried to break #7 and could not.
+
+**What I checked**
+
+- Ask 2 is gone from `0002`, in the section `## What I need from you`. The card now asks one thing only: untick #1.
+- All five faults from the thread now have cards, `0006` to `0010`. `0002`'s `## Links` names each of them.
+- The dead `src/utils.js` links in `PRD.md` are at lines 102 and 195. `0009` cites the same two lines.
+- The MIT claim is at `PRD.md` line 107, in section 5.4. `0010` gives that correct location. The old thread said section 9, and that was wrong.
+
+**One small gap, not a criterion failure**
+
+`PRD.md` section 7 says the old `importScripts('utils.js')` sits at `src/background.js#L11`. That anchor is stale. `background.js` now has only one `importScripts`, at a different line, and it loads `lib/*`. The thread never recorded this fault, so it is outside #7. `0009` could take it as a third line.
+
+No criterion is disproved.
+
+VERDICT: sound
+
