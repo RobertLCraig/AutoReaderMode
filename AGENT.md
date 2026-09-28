@@ -38,7 +38,7 @@ MV3 CSP blocks inline `<script>` in HTML. All JS must be in separate `.js` files
 ## Adding features
 
 ### To add a new site-management feature
-Edit `popup.js`. The `getSites()` / `setSites()` helpers abstract `chrome.storage.sync`. Use `await` throughout — no callback-style code.
+The site list lives in `options.js`: `renderSites()`, `addHostFromInput()` and `removeHost()` manage `readerSites` through its `syncGet()` / `syncSet()` wrappers over `chrome.storage.sync`. `popup.js` only sets the rule for the current site (`setRule()`, with its own `syncGet()` / `syncSet()`). Use `await` throughout — no callback-style code.
 
 ### To improve content extraction (Chrome)
 Edit `content/reader.js`. [Mozilla Readability](https://github.com/mozilla/readability) is already vendored at `content/readability.js` and injected before `reader.js`; `tryReadability()` calls it. When Readability returns too little, `fallbackExtract()` and `cleanClone()` hold the selector heuristic.
