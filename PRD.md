@@ -99,7 +99,7 @@ Each signal records its name on the trigger event so the popup can show "Trigger
 Two paths, branched on `isEdgeBrowser()` exactly as v1.2 does:
 
 **Edge path (primary):**
-1. `convertUrl(originalUrl)` builds `read://https_<host>/?url=<encoded>` ([src/utils.js:26-38](src/utils.js#L26-L38)).
+1. `convertUrl(originalUrl)` builds `read://https_<host>/?url=<encoded>`. In v2.0 there is no `convertUrl()`: the URL is built inline in `redirectToImmersiveReader()` in [src/background.js](src/background.js).
 2. `chrome.tabs.update(tabId, { url: readerUrl })` redirects the tab. Immersive Reader takes over.
 3. **Fallback:** register a one-shot `webNavigation.onErrorOccurred` listener for that tab. If the `read://` navigation errors or times out (1.5 s without `onCompleted`), revert to the original URL and inject the overlay path instead. Log the fallback so the user sees why.
 
@@ -192,7 +192,7 @@ No new permissions. Curated lists are bundled, not fetched.
 ## 8. Edge-specific notes
 
 - `read://https_<host>/?url=<encoded>` remains the default behaviour. This is what v1.2 does today and the user has confirmed it still works in their Edge install.
-- `isEdgeBrowser()` in [src/utils.js](src/utils.js#L10-L20) and `convertUrl()` are kept as-is.
+- `isEdgeBrowser()` and `convertUrl()` are kept as-is. In v2.0 `isEdgeBrowser()` lives in [src/background.js](src/background.js), and `convertUrl()` became inline code in `redirectToImmersiveReader()` in the same file.
 - The fallback (revert tab and inject overlay) only fires if `webNavigation.onErrorOccurred` reports a failure on the `read://` navigation, or if `onCompleted` does not fire within 1.5 s. This is defensive insurance against Microsoft changing the scheme later, not a current need.
 - Add an Edge-specific manual test pass to the testing checklist, now [card 0005](docs/board/todo/0005-the-twelve-manual-checks-nobody-has-run.md): load unpacked in Edge, hit a curated paywall site, confirm Immersive Reader opens (URL bar shows `read://`), and confirm the overlay fallback does *not* fire.
 
