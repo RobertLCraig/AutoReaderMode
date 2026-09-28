@@ -69,7 +69,7 @@ src/
 ├── popup.js          Popup logic — current-tab status, trigger reason, manual toggle, per-site rule
 ├── options.html      Options page markup
 ├── options.js        Options logic — detection toggles, site list, curated-list management
-├── content/          Injected into the page (Chrome, and the Edge fallback)
+├── content/          Injected into the page (Chrome; Edge on heuristics or read:// failure)
 │   ├── readability.js    Vendored Mozilla Readability (Apache-2.0)
 │   ├── detect.js         Paywall and ad-density heuristics
 │   └── reader.js         Renders the inline reading overlay
@@ -90,15 +90,15 @@ src/
 
 ## How It Works
 
+### Deciding whether to fire (both browsers)
+
+On every top-level `webNavigation.onCompleted` event, `background.js` asks `lib/triggers.js` whether to fire. A per-site Always / Never rule wins; then your own site list, the curated paywall list, and the curated ad-heavy list. If none of them fire and a heuristic is enabled, the page is handed to the in-page heuristics instead, in Edge as well as Chrome.
+
 ### Edge
 
-On every top-level `webNavigation.onCompleted` event, `background.js` asks `lib/triggers.js` whether to fire. A per-site Always / Never rule wins; then your own site list, the curated paywall list, and the curated ad-heavy list. If none of them fire and a heuristic is enabled, the page is handed to the in-page heuristics instead.
+When a trigger fires, `background.js` calls `chrome.tabs.update` to navigate the tab to Edge's native `read://https_<domain>/?url=<encoded-url>` format, and Edge's Immersive Reader takes over. If that navigation errors (`webNavigation.onErrorOccurred`), the tab is reverted to the original URL and the in-page overlay is injected instead. When no trigger fires and only the heuristics decide, Edge gets the in-page overlay below, not `read://`.
 
-### Edge
-
-When a trigger fires, `background.js` calls `chrome.tabs.update` to navigate the tab to Edge's native `read://https_<domain>/?url=<encoded-url>` format, and Edge's Immersive Reader takes over. If that navigation errors (`webNavigation.onErrorOccurred`), the tab is reverted to the original URL and the Chrome overlay is injected instead.
-
-### Chrome / Chromium
+### In-page overlay (Chrome / Chromium; Edge when the heuristics decide or `read://` fails)
 
 `background.js` first runs a small `chrome.scripting.executeScript` function that sets the trigger context on the page (`__ARM_TRIGGER_REASON`, `__ARM_DETECT_CONFIG`, `__ARM_REQUIRE_HEURISTIC`). It then injects `content/readability.js`, then `content/detect.js` (only when the heuristics must decide), then `content/reader.js`. When the heuristics decide, `reader.js` mounts only if `detect.js` says so. `reader.js` parses the page with Mozilla Readability, falls back to the v1 CSS selector heuristic when the result is shorter than 500 characters, and re-parses for up to 5 s while a single-page app settles. It renders the result in a full-screen overlay. Pressing Esc, Alt+R, or clicking "Exit Reader Mode" removes the overlay without navigating away.
 

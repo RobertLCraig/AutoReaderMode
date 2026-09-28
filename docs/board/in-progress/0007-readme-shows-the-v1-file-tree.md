@@ -22,7 +22,7 @@ Any other document, and any change to the code.
 <!-- AC:BEGIN -->
 - [x] #1 THE "File Structure" tree in `README.md` SHALL name every file and folder in `src/` and no
       file that is not there. proves: none - no suite in this repository reads prose
-- [ ] #2 THE "How It Works" and "Permissions" sections of `README.md` SHALL describe what
+- [x] #2 THE "How It Works" and "Permissions" sections of `README.md` SHALL describe what
       `src/background.js` injects in v2 and match `src/manifest.json`. proves: none - as #1
 <!-- AC:END -->
 
@@ -112,4 +112,21 @@ VERDICT: defect
 - **#2 reopened**, by the acceptance lens: the trigger-decision step, which runs for both browsers in the onCompleted listener in src/background.js, sits under a duplicate "### Edge" heading, so "How It Works" tells a reader it applies to Edge only.
 - **#2 was named by the scope lens and is not a ticked criterion here**, so nothing was changed: "How It Works" puts the trigger logic that both browsers share under a leftover `### Edge` heading, which is repeated, so the section says the trigger logic is for Edge only.
 - **#2 was named by the breakage lens and is not a ticked criterion here**, so nothing was changed: "How It Works" says Edge gets the injected scripts only when `read://` fails, but `background.js` also injects `detect.js` and the overlay on Edge when the heuristics decide, and it puts the trigger rules that apply to both browsers under an Edge-only heading.
+
+**2026-09-28** RESULT: done
+TESTS: +0 new, no suite exists
+TOUCHED: README.md
+TOUCHED: docs/board/in-progress/0007-readme-shows-the-v1-file-tree.md
+OUT-OF-SCOPE: none
+
+Answers the review. Both criteria are `proves: none`, so no test. In "How It Works" the first,
+duplicate `### Edge` heading is now "Deciding whether to fire (both browsers)", because the
+`decideTrigger` step in `handleNavigation` runs for every browser. The Edge section now says
+`read://` is used only when a source fires, and that when only the heuristics decide, Edge takes the
+in-page overlay path too (`background.js` redirects only on `decision.fire && isEdgeBrowser()`).
+The old "Chrome / Chromium" heading is now "In-page overlay (Chrome / Chromium; Edge when the
+heuristics decide or `read://` fails)". The `content/` line in the file tree says the same.
+Permissions is unchanged; the review found it correct.
+
+`pest.bat` and `pint.bat` still cannot run: this repository has no `composer.json` and no `vendor/`.
 
