@@ -19,7 +19,7 @@ All extension source lives in `src/`. The browser loads `src/` as the unpacked e
 ## Key constraints
 
 ### No build step
-There is no Webpack, Vite, Rollup, or transpiler. Do not introduce `import`/`export` ES module syntax unless you also switch `background.js` to `"type": "module"` in `manifest.json` **and** update all consumers. Currently `utils.js` is loaded with `importScripts()` (background) and a `<script>` tag (popup) — both require classic (non-module) syntax.
+There is no Webpack, Vite, Rollup, or transpiler. Do not introduce `import`/`export` ES module syntax unless you also switch `background.js` to `"type": "module"` in `manifest.json` **and** update all consumers. Currently `background.js` loads `lib/matcher.js`, `lib/settings.js` and `lib/triggers.js` with `importScripts()`, and injects `content/readability.js`, `content/detect.js` and `content/reader.js` with `chrome.scripting.executeScript` — all require classic (non-module) syntax.
 
 ### Manifest V3 rules
 - No `eval()`, no `new Function()`, no remote code loading.
@@ -31,7 +31,7 @@ There is no Webpack, Vite, Rollup, or transpiler. Do not introduce `import`/`exp
 MV3 CSP blocks inline `<script>` in HTML. All JS must be in separate `.js` files loaded via `<script src="...">`.
 
 ### Browser detection
-`isEdgeBrowser()` in `utils.js` uses the UA string (`/Edg\/\d+/`). Edge includes `Edg/<version>`; Chrome does not. This is the correct detection; do not use feature detection or the `browser` API object.
+`isEdgeBrowser()` in `background.js` uses the UA string (`/Edg\/\d+/`). Edge includes `Edg/<version>`; Chrome does not. This is the correct detection; do not use feature detection or the `browser` API object.
 
 ---
 
@@ -41,7 +41,7 @@ MV3 CSP blocks inline `<script>` in HTML. All JS must be in separate `.js` files
 Edit `popup.js`. The `getSites()` / `setSites()` helpers abstract `chrome.storage.sync`. Use `await` throughout — no callback-style code.
 
 ### To improve content extraction (Chrome)
-Edit `reader.js`. The `extractArticleElement()` and `buildCleanContent()` functions contain the heuristics. Consider bundling [Mozilla Readability](https://github.com/mozilla/readability) for better extraction — add `readability.js` to `src/`, list it before `reader.js` in any scripting call, and call `new Readability(document.cloneNode(true)).parse()`.
+Edit `content/reader.js`. [Mozilla Readability](https://github.com/mozilla/readability) is already vendored at `content/readability.js` and injected before `reader.js`; `tryReadability()` calls it. When Readability returns too little, `fallbackExtract()` and `cleanClone()` hold the selector heuristic.
 
 ### To change the reader overlay styling
 Edit the `css` template literal inside `reader.js`. Styles are injected into the page inside the overlay element (self-contained, cleaned up when overlay is removed). Dark mode is handled via `@media (prefers-color-scheme: dark)`.

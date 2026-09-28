@@ -25,11 +25,30 @@ Any other document, and any change to the code. `AGENT.md` is made to describe `
 
 ## Acceptance
 <!-- AC:BEGIN -->
-- [ ] #1 `AGENT.md` SHALL NOT name `utils.js`, and SHALL name the file each moved function lives in
+- [x] #1 `AGENT.md` SHALL NOT name `utils.js`, and SHALL name the file each moved function lives in
       now. proves: none - no suite in this repository reads prose
-- [ ] #2 `AGENT.md` SHALL NOT tell an agent to bundle Readability, because it is bundled. proves:
+- [x] #2 `AGENT.md` SHALL NOT tell an agent to bundle Readability, because it is bundled. proves:
       none - as #1
 <!-- AC:END -->
 
 ## Tasks
-- [ ] Read `src/background.js`, `src/lib/` and `src/content/` and rewrite the three passages to match
+- [x] Read `src/background.js`, `src/lib/` and `src/content/` and rewrite the three passages to match
+
+## Comments
+
+**2026-09-28** RESULT: done
+TESTS: +0 new, both criteria are proves: none; no suite exists to run
+TOUCHED: AGENT.md, docs/board/in-progress/0006-agent-md-still-gives-v1-instructions.md, docs/board/todo/0011-agent-md-names-popup-helpers-that-are-gone.md
+OUT-OF-SCOPE: 0011
+Rewrote the three passages against `src/` as it stands. The "No build step" passage now says
+`background.js` loads the three `lib/` files with `importScripts()` and injects the three `content/`
+files with `executeScript`. The popup loads only `popup.js`, so the old `<script>` tag claim was
+dropped, not moved. `isEdgeBrowser()` is now placed in `background.js`. The extraction passage now
+says Readability is vendored at `content/readability.js`, and names `tryReadability()`,
+`fallbackExtract()` and `cleanClone()` in place of the two v1 functions. A grep of `AGENT.md` for
+`utils.js`, `extractArticleElement` and "bundling" finds nothing.
+The session prompt asks for `pest.bat` and `pint.bat`. This repository has no `composer.json` and no
+`vendor/`; it is a plain MV3 extension, and `AGENT.md` says there is no automated suite. Neither
+command exists to run, and none was run.
+Line 41 names `getSites()` / `setSites()`, which v2.0 removed. That is outside this card's three
+passages, so it is raised as `0011`.
