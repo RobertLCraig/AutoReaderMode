@@ -61,7 +61,7 @@ everything the card knows and changes only how it is ordered and said. `## Direc
       and SHALL NOT edit `## Direction` or `## Decided`. proves: none - as #2
 - [x] #6 WHEN this board's rewrite is finished, THE BOARD SHALL report zero open cards failing the
       checks. proves: none - as #2
-- [ ] #7 NO rewritten card SHALL put a question to Rob that reading settles: `0002`'s ask 2, whether
+- [x] #7 NO rewritten card SHALL put a question to Rob that reading settles: `0002`'s ask 2, whether
       the documentation faults get cards, SHALL be gone, and every fault its thread records SHALL be
       on a card, all five, the dead `src/utils.js` link in `PRD.md` sections 5 and 8 included.
       proves: none - as #2
@@ -215,3 +215,25 @@ VERDICT: defect
 **2026-08-29** The reviewer returned this card and its finding is the last review entry at the bottom of ## Direction. The loop moved it from todo/ to human-review/ because it has bounced 1 time between todo and ai-review, all 6 criteria ticked. THE BUILDER COULD NOT ACT ON THAT FINDING. A reviewer never unticks a criterion - it is forbidden from editing acceptance at all - so the card came back with 6 of 6 criteria still ticked, every session found nothing open to do, and the loop promoted it again on the boxes. Untick what the reviewer disproved and move it back to todo/, or say here why the finding is wrong.
 
 **2026-09-28** Manager pass: reopened with new criterion #7 because both the scope and breakage findings on `0002` still hold. Its `## What I need from you` still asks Rob, as ask 2, whether "the four documentation faults" should get cards. None of the four reasons in `docs/board/README.md` makes that his, and `HANDOVER.md` already says every outstanding item is a card. It also counts four when the thread records five: `src/utils.js` does not exist, yet `PRD.md` sections 5 and 8 still link to it. The ask sitting above `## Why` is the convention's placement and reopens nothing.
+
+**2026-09-28**
+RESULT: done
+TESTS: +0 new, none ran - this repository has no suite (no `composer.json`, no `vendor/`, no `package.json`); #7 is `proves: none`
+TOUCHED: docs/board/in-progress/0004-rewrite-this-board-s-cards-for-the-reader.md, docs/board/human-review/0002-the-handover-still-describes-v1.md, docs/board/todo/0006-agent-md-still-gives-v1-instructions.md, docs/board/todo/0007-readme-shows-the-v1-file-tree.md, docs/board/todo/0008-prd-spa-link-points-at-the-wrong-lines.md, docs/board/todo/0009-prd-links-to-src-utils-js-which-is-gone.md, docs/board/todo/0010-prd-calls-readability-mit-when-it-is-apache.md
+OUT-OF-SCOPE: 0006, 0007, 0008, 0009, 0010
+
+Met #7. `0002`'s ask 2 is gone, with its "On 2" paragraph and the attention clause in "Why it needs
+you". The card now asks one thing: untick #1. Each of the five faults `0002`'s thread records is on
+its own card. I re-checked each against the files today and all five are still live:
+
+- `AGENT.md` - `0006`
+- `README.md` - `0007`
+- `PRD.md` 5.5's `HANDOVER.md#L62-L66` anchor - `0008`
+- the dead `src/utils.js` links in `PRD.md` 5.4 line 102 and 8 line 195 - `0009`
+- the MIT claim - `0010`
+
+`0002` names all five under `## Links`. Its `## Comments` is untouched.
+
+One correction the cards carry: the MIT claim is in `PRD.md` section 5.4, line 107, not section 9 as
+`0002`'s thread says. `0010` says so. `board:convention --path=$PWD` read 0 of 5 before and 0 of 10
+after. No browser check is needed; nothing but markdown changed.
