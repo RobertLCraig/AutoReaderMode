@@ -21,13 +21,34 @@ Any other section of `README.md`, any other document, and any change to the code
 
 ## Acceptance
 <!-- AC:BEGIN -->
-- [ ] #1 THE "Usage" section of `README.md` SHALL describe the controls in `src/popup.html` and
+- [x] #1 THE "Usage" section of `README.md` SHALL describe the controls in `src/popup.html` and
       `src/options.html` and name no control that is not there. proves: none - no suite in this
       repository reads prose
-- [ ] #2 THE "Features" table of `README.md` SHALL list the four trigger sources and the per-site
+- [x] #2 THE "Features" table of `README.md` SHALL list the four trigger sources and the per-site
       rule that v2 has. proves: none - as #1
 <!-- AC:END -->
 
 ## Tasks
-- [ ] Read `src/popup.html`, `src/popup.js`, `src/options.html` and `src/options.js` and rewrite both
+- [x] Read `src/popup.html`, `src/popup.js`, `src/options.html` and `src/options.js` and rewrite both
       sections to match
+
+## Comments
+
+**2026-09-28**
+RESULT: done
+TESTS: +0 new - both criteria are proves: none; this repository has no test suite (no composer.json, no vendor/bin/pest.bat, no package.json), so pest and pint were not run
+TOUCHED: README.md
+TOUCHED: docs/board/in-progress/0012-readme-usage-describes-the-v1-popup.md
+OUT-OF-SCOPE: none
+
+"Usage" now walks the popup as `src/popup.html` has it: domain, status and reason, the Open Reader
+Mode button, the Always / Default / Never rule, and the Settings cog and footer link. It then lists
+what the options page holds: the four detection toggles, the per-list "manage" drawer, and the "Your
+sites" add box and × buttons. The × now sits on the options page, where it is. The "Exiting reader
+mode" subsection was left as it was: the popup button does switch to "Exit Reader Mode", and
+`content/reader.js` handles Esc and Alt+R.
+
+"Features" names the four sources as `HANDOVER.md` does (your list, curated paywall, curated
+ad-heavy, heuristics), adds a Per-site rule row and an Options page row, and drops "Site management".
+
+Not checked in a browser. The wording was matched against the markup, not against a running popup.
