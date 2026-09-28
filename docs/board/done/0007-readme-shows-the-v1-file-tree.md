@@ -130,3 +130,61 @@ Permissions is unchanged; the review found it correct.
 
 `pest.bat` and `pint.bat` still cannot run: this repository has no `composer.json` and no `vendor/`.
 
+### 2026-09-28 review (v20260928194222-c1b3)
+
+**suite**
+
+No suite this job could find in AutoReaderMode, so none ran. That is not a pass.
+
+**acceptance: sound**
+
+I checked both criteria against the code. I could not break either one.
+
+**#1 (file tree): it holds.** `src/` has 17 files in 4 folders. The tree in `README.md` names every one of them, including the three icons. It does not name `utils.js` or a top-level `reader.js`.
+
+**#2 (How It Works and Permissions): it holds.**
+- **Trigger order:** `decideTrigger` in `src/lib/triggers.js` checks the Never / Always rule, then your site list, then the paywall list, then the ad-heavy list. After that it can hand the page to the heuristics. The new "both browsers" section says the same.
+- **Edge path:** `handleNavigation` in `src/background.js` goes to `read://` only when `decision.fire && isEdgeBrowser()`. When only the heuristics decide, Edge gets `injectReader`. The README now says both things.
+- **Edge fallback:** the `onErrorOccurred` listener calls `revertToOriginal`, and that injects the overlay. The README says this too.
+- **Injection order:** `injectReader` sets the three `__ARM_*` values first. Then it injects `readability.js`, then `detect.js` (only when needed), then `reader.js`. This matches.
+- **Permissions:** every row matches `src/manifest.json`.
+
+The earlier defects are fixed. The duplicate `### Edge` heading is gone, and the text now says Edge uses the overlay when the heuristics decide.
+
+One small gap does not fail a criterion. `handleNavigation` also falls back to the overlay at once when `redirectToImmersiveReader` returns false. The README describes only the `onErrorOccurred` fallback. The heading still says "`read://` fails", so this is an omission and not a false claim.
+
+VERDICT: sound
+
+**scope: sound**
+
+**Scope check: sound.**
+
+**Nothing went over the fence:**
+- In `README.md`, only three sections changed: "File Structure", "How It Works" and "Permissions". The card names all three.
+- "Usage" and "Features" did not change. They still show the v1 popup. The builder put that work on card `0012` and did not fix it. That is correct.
+- No code in `src/` changed.
+- The `AGENT.md` edit and the moves of `0004` and `0006` came from earlier commits in the same range. They are not this build's work.
+
+**Nothing is half done:**
+- The review before this one found two faults: a second `### Edge` heading, and a claim that Edge used the overlay only when `read://` failed. Both are fixed now.
+- "How It Works" now has three different headings: "Deciding whether to fire (both browsers)", "Edge", and "In-page overlay (Chrome / Chromium; Edge when the heuristics decide or `read://` fails)".
+- The `content/` line in the file tree now says the same thing as the overlay heading.
+- A search of `README.md` finds no `utils.js` and no v1 text that says extraction uses only CSS selectors.
+
+This check disproves no criterion.
+
+VERDICT: sound
+
+**breakage: sound**
+
+I found no defect. The fix answers both points from the last review.
+
+- **The duplicate `### Edge` heading is gone.** The first heading is now "Deciding whether to fire (both browsers)". This matches `handleNavigation` in `src/background.js`, which calls `decideTrigger` for every browser.
+- **Edge now goes to `read://` only when a source fires.** In `handleNavigation`, the redirect runs only on `decision.fire && isEdgeBrowser()`. When only the heuristics decide, the code reaches `injectReader` with `requireHeuristic` set, on Edge too. The README "Edge" paragraph, the overlay heading and the `content/` line in the file tree now all say this.
+- **The trigger order is correct.** `decideTrigger` in `src/lib/triggers.js` checks the per-site rule, then your site list (`preset`), then the paywall list, then the ad-heavy list. The README gives the same order.
+- **The fallback is correct.** The `onErrorOccurred` listener calls `revertToOriginal`, which injects the overlay after the revert loads. The README says this.
+
+One small gap does not break a criterion. `handleNavigation` also injects the overlay at once when `redirectToImmersiveReader` returns false, with no navigation error. The overlay heading says "`read://` fails", and that covers this case. No text in the README is now false.
+
+VERDICT: sound
+
