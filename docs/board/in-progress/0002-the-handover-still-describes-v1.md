@@ -194,3 +194,15 @@ three PNGs and the two `manifest.json` keys that use them. Checked by script tha
 `src/` is now named in `HANDOVER.md`; none is missing. The "What I need from you" block at the top
 of this card still asks the untick question, which the entry above already answered; I left it,
 since rewording the card's ask is not this criterion's work.
+
+**2026-09-29**
+RESULT: done
+TESTS: +0 new, none: no criterion carries a proves: line, and the worktree has no suite (no vendor/, composer.json or package.json), so pest.bat and pint.bat cannot run
+TOUCHED: docs/board/in-progress/0002-the-handover-still-describes-v1.md
+OUT-OF-SCOPE: none
+
+A second unattended run found #1 already built in commit `b4bc78a` on this branch and built
+nothing more. I checked it again: every file under `src/`, all three icons included, is named in
+`HANDOVER.md` (line 26 in the tree, line 72 in the key-files table). All four boxes stay ticked. The
+"What I need from you" block at the top still asks the untick question the 2026-09-29 attended entry
+already answered. Whoever routes this card should read that block as settled, not as an open ask.
