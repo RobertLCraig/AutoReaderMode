@@ -194,3 +194,13 @@ three PNGs and the two `manifest.json` keys that use them. Checked by script tha
 `src/` is now named in `HANDOVER.md`; none is missing. The "What I need from you" block at the top
 of this card still asks the untick question, which the entry above already answered; I left it,
 since rewording the card's ask is not this criterion's work.
+
+**2026-09-29**
+RESULT: done
+TESTS: +0 new, none: #1 carries no proves: line, and the repository has no suite (no vendor/, composer.json or package.json), so pest.bat and pint.bat cannot run here
+TOUCHED: docs/board/in-progress/0002-the-handover-still-describes-v1.md
+OUT-OF-SCOPE: none
+
+Re-verified the entry above on this branch rather than rebuilding it. Every one of the 17 files under
+`src/` is named in `HANDOVER.md`, and `icons/` sits in the Architecture tree (line 26) and in the
+key-files table (line 72). #1 stays ticked. No browser check applies: this card changes markdown only.
