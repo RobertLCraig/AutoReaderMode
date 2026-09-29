@@ -23,6 +23,7 @@ src/
 │   ├── readability.js      vendored Mozilla Readability (Apache-2.0)
 │   ├── detect.js           in-page paywall + ad-density heuristics
 │   └── reader.js           overlay renderer, SPA MutationObserver, v1 selector fallback
+├── icons/                  icon16.png, icon48.png, icon128.png (toolbar + extension icons)
 ├── data/
 │   ├── paywalls.json       curated paywall hosts (28 entries, version 1)
 │   └── ad-heavy.json       curated ad-heavy hosts (14 entries, version 1)
@@ -68,6 +69,7 @@ Before injecting, `background.js` stamps three globals on the page — `__ARM_TR
 | `src/data/ad-heavy.json` | Curated ad-heavy hosts |
 | `src/popup.html` / `src/popup.js` | Popup for the current tab: status pill, trigger reason, one action, per-site rule |
 | `src/options.html` / `src/options.js` | Options page: four detection toggles, bulk site list, per-entry curated-list management |
+| `src/icons/` | `icon16.png`, `icon48.png`, `icon128.png`, named by `manifest.json` under `action.default_icon` and `icons` |
 
 `src/utils.js` and the old top-level `src/reader.js` were removed in v2.0. `isEdgeBrowser()` now lives in `background.js`, and the `read://` URL is built inline there.
 

@@ -50,7 +50,7 @@ can record the verdicts rather than being rewritten twice.
 
 ## Acceptance
 <!-- AC:BEGIN -->
-- [ ] #1 THE ARCHITECTURE and key-files sections SHALL describe the files that exist in `src/`,
+- [x] #1 THE ARCHITECTURE and key-files sections SHALL describe the files that exist in `src/`,
       including `content/`, `data/`, `lib/` and the options page.
       Unticked 2026-09-29: `src/icons/` holds `icon16.png`, `icon48.png` and `icon128.png`, which
       `src/manifest.json` names under `action.default_icon` and `icons`. `HANDOVER.md` does not
@@ -182,3 +182,15 @@ VERDICT: defect
 **2026-08-29** The reviewer returned this card and its finding is the last review entry at the bottom of ## Direction. The loop moved it from todo/ to human-review/ because it has bounced 1 time between todo and ai-review, all 4 criteria ticked. THE BUILDER COULD NOT ACT ON THAT FINDING. A reviewer never unticks a criterion - it is forbidden from editing acceptance at all - so the card came back with 4 of 4 criteria still ticked, every session found nothing open to do, and the loop promoted it again on the boxes. Untick what the reviewer disproved and move it back to todo/, or say here why the finding is wrong.
 
 **2026-09-29** Checked the review's #1 finding against the files, and it holds. `src/icons/` exists, `src/manifest.json` references all three PNGs in it, and `HANDOVER.md` never mentions `icons`. #1 is now unticked with that finding beside it. The work owed is one `icons/` line in the Architecture tree and one row in the key-files table. Checked by an attended agent under Rob's rule that human-review holds only what he must decide. Unticking is allowed when the disproving finding is written beside the box, so this needed no answer from Rob.
+
+**2026-09-29**
+RESULT: done
+TESTS: +0 new, none: #1 carries no proves: line, and the repository has no suite (no vendor/, composer.json or package.json), so pest.bat and pint.bat cannot run here
+TOUCHED: HANDOVER.md, docs/board/in-progress/0002-the-handover-still-describes-v1.md
+OUT-OF-SCOPE: none
+
+Added `icons/` to the Architecture tree and a `src/icons/` row to the key-files table, naming the
+three PNGs and the two `manifest.json` keys that use them. Checked by script that every file under
+`src/` is now named in `HANDOVER.md`; none is missing. The "What I need from you" block at the top
+of this card still asks the untick question, which the entry above already answered; I left it,
+since rewording the card's ask is not this criterion's work.
