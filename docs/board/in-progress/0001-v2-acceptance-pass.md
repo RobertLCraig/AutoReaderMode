@@ -118,3 +118,14 @@ Re-run of the pass on 2026-10-04 against an unchanged tree. Nothing moved since 
 Why #1 and #3 stay unmet: #1 needs all eight recorded and #8 can only be recorded by a person running 0005. #3 needs all eight to pass, so it waits on 0015, 0016 and 0005. Another unattended run of this card cannot change that; it should wait until those three cards are done.
 
 No code was written and nothing was committed. pest/pint do not apply: this repository has no PHP. No check was done in Rob's own browser profile.
+
+**2026-10-04** RESULT: blocked
+TESTS: +0 new; re-ran npm test: 5 PASS, red: #4 [chromium], #7 [chromium] (real failures, carded 0015 and 0016); #8 not run
+TOUCHED: none
+OUT-OF-SCOPE: none
+
+Third run of this card against the same tree: src/, tests/ and package.json have not changed since 7c32636. Verdicts are identical: #1 PASS [edge] read://https_www.ft.com/..., #2 PASS [chromium] overlay 1392 chars, #3 PASS [edge], #4 FAIL popup reads "Reader mode is active on this tab." (0015), #5 PASS, #6 PASS, #7 FAIL empty badge on chrome://version (0016), #8 NOT RUN (card 0005, not_for_the_loop).
+
+Marked blocked, not partial: card #1 needs criterion 8 recorded, and only a person running 0005 can do that; card #3 also needs 0015 and 0016 fixed (0016 is a decision for Rob). Please stop scheduling this card unattended until those three are done; another run will print the same lines. #2 is met (both failures have cards).
+
+No code written, nothing committed. pest/pint do not apply: no PHP in this repository. No check was done in Rob's own browser profile.
