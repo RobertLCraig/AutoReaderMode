@@ -129,3 +129,5 @@ Third run of this card against the same tree: src/, tests/ and package.json have
 Marked blocked, not partial: card #1 needs criterion 8 recorded, and only a person running 0005 can do that; card #3 also needs 0015 and 0016 fixed (0016 is a decision for Rob). Please stop scheduling this card unattended until those three are done; another run will print the same lines. #2 is met (both failures have cards).
 
 No code written, nothing committed. pest/pint do not apply: no PHP in this repository. No check was done in Rob's own browser profile.
+
+**2026-10-04** The loop moved this card from in-progress/ to human-review/. 2 takes in a row ended with it still in in-progress/, and the last one said: `made no progress: 2 of 3 still open, exactly as this take found it`. What this card is waiting for is not another session. bin/work-card.ps1 counts those takes out of storage/logs/work-card.log, and will start it again as soon as a person has moved it back to todo/.
