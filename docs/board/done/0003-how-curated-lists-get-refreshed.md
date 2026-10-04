@@ -59,3 +59,7 @@ costs a permission, a privacy notice and a server that has to outlive interest i
 
 
 **2026-08-16** 3
+
+**2026-10-04** RESULT: done
+TOUCHED: 0019 - writes option 3 into PRD section 9, the HANDOVER section on curated lists (with how to refresh a list), and one README sentence naming the user's own site list as the escape hatch.
+No decision card: option 3 raises no question only a person can settle.
