@@ -63,7 +63,7 @@ one nobody can finish.
 ## Acceptance
 <!-- AC:BEGIN -->
 - [ ] #1 EACH of the eight criteria in PRD section 11 SHALL have a recorded pass or fail.
-- [ ] #2 WHERE a criterion fails, A CARD SHALL exist naming that failure, so the verdict is not the
+- [x] #2 WHERE a criterion fails, A CARD SHALL exist naming that failure, so the verdict is not the
       end of the record.
 - [ ] #3 WHEN all eight pass, THE PRD SHALL be marked as met and the version SHALL be releasable.
 <!-- AC:END -->
@@ -79,3 +79,31 @@ one nobody can finish.
 and that is a look at built work, not a decision. Every criterion is reachable by Playwright with
 the extension loaded in a persistent context, and this machine has Node 26 and Edge stable. The
 Plan above is the harness; the builder writes it and records the verdicts.
+
+**2026-10-04** RESULT: partial
+TESTS: +7 new acceptance checks in tests/acceptance.mjs; 5 PASS, red: #4 [chromium], #7 [chromium] (real failures, carded); #8 not run
+TOUCHED: .gitignore
+package.json
+package-lock.json
+tests/acceptance.mjs
+docs/board/todo/0015-popup-never-names-the-paywall-meta-heuristic.md
+docs/board/todo/0016-no-error-badge-on-chrome-pages.md
+docs/board/todo/0017-popup-says-active-when-the-heuristic-did-not-fire.md
+docs/board/todo/0018-handover-still-says-none-of-v2-has-been-run.md
+OUT-OF-SCOPE: 0017, 0018
+
+Verdicts, 2026-10-04, `npm test` (node tests/acceptance.mjs), headless, Edge 154 stable and Playwright Chromium:
+- #1 PASS [edge] ft.com went to read://https_www.ft.com/?url=..., still there 3 s later, stored reason edge:immersive-reader (no fallback).
+- #2 PASS [chromium] ft.com: overlay mounted with the article text (1392 chars).
+- #3 PASS [edge] host written to readerSites via the worker: next visit went to read://.
+- #4 FAIL [chromium] overlay mounts, but the popup reads "Reader mode is active on this tab.", not "Heuristic: paywall meta tag". Stored reason is 'no-match'. Card 0015.
+- #5 PASS [chromium] all four flags off: no overlay and no trigger reason on 3 non-listed hosts, all carrying the locked meta tag.
+- #6 PASS [chromium] body filled by script 1.5 s after load: overlay carries the late text.
+- #7 FAIL [chromium] chrome://version: badge empty; popup half passes (unavailable state). background.js never injects on non-http pages, so the PRD example cannot fire. Card 0016, written as a decision (Options + Recommendation) and placed in todo/ because that is the only lane I may write to; it may belong in human-review.
+- #8 NOT RUN: it is card 0005, which carries not_for_the_loop.
+
+Why criteria are not met: #1 needs all eight recorded and #8 is not; #3 needs all eight to pass.
+
+Test-first note: the code under test already existed, so each check was first run against it. Two first reds were harness faults and are fixed: the headless shell cannot load extensions (now channel 'chromium'), and routing '**/*' served HTML for the popup's own scripts (now http(s) only). Red-capability of #5: with default flags the same locked-meta page DID mount the overlay, so #5 can see an injection. Found in passing: 0017, a trigger reason is stored even when the heuristic gate stops reader.js, so the popup claims reader mode on plain pages.
+
+Assumptions and gaps: pages are served by context.route, not live sites; #1 checks the read:// URL and the absence of the fallback, not that Immersive Reader rendered text (headless). The popup is opened as a tab with the target tab brought to front, not from the toolbar. #3 writes readerSites through the worker as the card's Plan says, not by clicking the popup. The pest/pint steps do not apply: this repository has no PHP, vendor or composer.json. No browser check was done on Rob's own profile.
