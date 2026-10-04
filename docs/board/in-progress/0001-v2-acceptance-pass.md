@@ -107,3 +107,14 @@ Why criteria are not met: #1 needs all eight recorded and #8 is not; #3 needs al
 Test-first note: the code under test already existed, so each check was first run against it. Two first reds were harness faults and are fixed: the headless shell cannot load extensions (now channel 'chromium'), and routing '**/*' served HTML for the popup's own scripts (now http(s) only). Red-capability of #5: with default flags the same locked-meta page DID mount the overlay, so #5 can see an injection. Found in passing: 0017, a trigger reason is stored even when the heuristic gate stops reader.js, so the popup claims reader mode on plain pages.
 
 Assumptions and gaps: pages are served by context.route, not live sites; #1 checks the read:// URL and the absence of the fallback, not that Immersive Reader rendered text (headless). The popup is opened as a tab with the target tab brought to front, not from the toolbar. #3 writes readerSites through the worker as the card's Plan says, not by clicking the popup. The pest/pint steps do not apply: this repository has no PHP, vendor or composer.json. No browser check was done on Rob's own profile.
+
+**2026-10-04** RESULT: partial
+TESTS: +0 new; re-ran npm test: 5 PASS, red: #4 [chromium], #7 [chromium] (real failures, carded 0015 and 0016); #8 not run
+TOUCHED: none
+OUT-OF-SCOPE: none
+
+Re-run of the pass on 2026-10-04 against an unchanged tree. Nothing moved since the previous take: 0015 and 0016 are still in todo/, and 0005 still carries not_for_the_loop. The verdicts are the same as the entry above: #1 PASS [edge] read://https_www.ft.com/..., #2 PASS [chromium] overlay 1392 chars, #3 PASS [edge], #4 FAIL popup reads "Reader mode is active on this tab." (0015), #5 PASS, #6 PASS, #7 FAIL empty badge on chrome://version (0016), #8 NOT RUN (card 0005, a person's job).
+
+Why #1 and #3 stay unmet: #1 needs all eight recorded and #8 can only be recorded by a person running 0005. #3 needs all eight to pass, so it waits on 0015, 0016 and 0005. Another unattended run of this card cannot change that; it should wait until those three cards are done.
+
+No code was written and nothing was committed. pest/pint do not apply: this repository has no PHP. No check was done in Rob's own browser profile.
