@@ -1,0 +1,13 @@
+{
+  "name": "autoreadermode",
+  "version": "1.0.0",
+  "description": "A Manifest V3 browser extension that **automatically activates reader mode** on websites you choose.",
+  "scripts": {
+    "test": "node tests/acceptance.mjs"
+  },
+  "type": "commonjs",
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  },
+  "private": true
+}
