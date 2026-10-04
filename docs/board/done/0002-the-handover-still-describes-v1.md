@@ -333,3 +333,65 @@ OUT-OF-SCOPE: none
 A third unattended run found every criterion already met on this branch and built nothing, so there is no commit. Re-checked against the files: a script found every file under `src/` named in `HANDOVER.md` (icons at line 26 in the tree and line 72 in the key-files table). "Known limitations" names Readability and the MutationObserver only as current behaviour, not as improvement paths. The v2.0 changelog entry is at line 154. The twelve checks live on `docs/board/todo/0005-the-twelve-manual-checks-nobody-has-run.md`. "Where the work is" points at the four lanes and lists no work item. Markdown only, so no browser check applies.
 
 The "What I need from you" block at the top still asks the untick question that the 2026-09-29 attended entry already answered. The card also carries a duplicated run of comments under the 2026-10-04 entry, which starts mid-sentence ("session is forbidden to edit...") and repeats the 2026-08-29 thread. Something that writes to the card copied it twice. I did not edit the card. Whoever routes it should read the ask as settled and send it to review.
+
+### 2026-10-04 review (v20261004150610-b45a)
+
+**suite**
+
+No suite this job could find in AutoReaderMode, so none ran. That is not a pass.
+
+**acceptance: sound**
+
+I tried to break each of the four criteria. None of them broke.
+
+**#1 holds now.** `HANDOVER.md` names every file under `src/`. I matched each file name against the handover, and none is missing. The old gap was `src/icons/`. It is now fixed in two places:
+- the "Architecture" tree, which lists the three PNGs
+- the "Key files" table, which also names the two `manifest.json` keys that use them (`action.default_icon` and `icons`)
+
+`content/`, `data/`, `lib/` and `options.html` / `options.js` are all in both places.
+
+**#2 holds.** "Known limitations" has no "improvement path" text. Readability and the MutationObserver show up only as things v2 already does.
+
+**#3 holds.** The changelog has a "v2.0 (current) - 2026-04-30" entry. The twelve manual checks now live on the board, at `docs/board/todo/0005-the-twelve-manual-checks-nobody-has-run.md`.
+
+**#4 holds.** "Where the work is" points at the four board lanes and at `docs/board/README.md`. It lists no work item.
+
+There is no test suite in this project, so no tests ran. All four checks come from reading the files.
+
+To your question: no, #1 does not need to be unticked now. The missing `icons/` line it was waiting on is now in `HANDOVER.md`.
+
+VERDICT: sound
+
+**scope: sound**
+
+I checked the scope only. I found no defect.
+
+**The big diff is from many cards, not only this one.** The `AGENT.md`, `README.md` and `docs/board/README.md` changes came from separate commits. Each one belongs to card 0006, 0007, 0011 or 0012, or to a board sync from the shared template (`a7e3de7` and the commits before it). They are not scope creep by 0002.
+
+**The work since the last review is small.** It is one `icons/` line in the Architecture tree and one `src/icons/` row in the key-files table, both in `HANDOVER.md`. That is the exact gap in #1, and nothing more.
+
+**The old scope findings are now closed:**
+- `0001` item 8 now points at card `0005`. So the twelve checks have one home.
+- The leftover `PRD.md` problems now have their own cards. The MIT/Apache licence clash is `0010`. The stale links are `0008`, `0009` and `0013`. The Edge timeout claim is `0014`.
+- The `PRD.md` §11 criterion 8 edit only changed a link. It did not run the acceptance pass, so it does not cross the fence.
+
+**One thing is left half done, but it breaks no criterion.** The card's "What I need from you" block still asks whether to untick #1. That question was answered on 2026-09-29. The builder saw this and left it on purpose. Whoever closes the card should delete the block.
+
+No criterion is disproved.
+
+VERDICT: sound
+
+**breakage: sound**
+
+I tried to find what this change breaks. I found nothing that breaks.
+
+- **#1 (the one that was unticked).** `HANDOVER.md` now names `icons/` in the Architecture tree and has a `src/icons/` row in the key-files table. Those match the `action.default_icon` and `icons` keys in `src/manifest.json`. So the reviewer's finding is fixed.
+- **Leftover links to `utils.js` and `convertUrl`.** I searched every file outside `docs/`. Each one that is left is a history note (changelog or "removed in v2.0") or a PRD line that says what replaced it. No live link points at a deleted file.
+- **Line-number links into the handover (`HANDOVER.md#L...`).** None are left. `PRD.md` section 5.5 now links to `#changelog`, which does not move when lines move.
+- **Other links into files.** `PRD.md` still links to `AGENT.md#L21-L22`. Those two lines are still the "No build step" rule that the link means.
+- **Text that is now false.** The MutationObserver lines in `HANDOVER.md` and the 5 s limit match the `reader.js` header comment, and the observer is in that file. The heading list in `README.md` matches `src/`.
+
+No test suite exists in this repo, so I ran no tests. The change is markdown only.
+
+VERDICT: sound
+
