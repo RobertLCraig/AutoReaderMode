@@ -324,3 +324,12 @@ nothing more. I checked it again: every file under `src/`, all three icons inclu
 `HANDOVER.md` (line 26 in the tree, line 72 in the key-files table). All four boxes stay ticked. The
 "What I need from you" block at the top still asks the untick question the 2026-09-29 attended entry
 already answered. Whoever routes this card should read that block as settled, not as an open ask.
+
+**2026-10-04** RESULT: done
+TESTS: +0 new, none: no criterion carries a proves: line, and the worktree has no suite (no vendor/, no composer.json), so pest.bat and pint.bat cannot run
+TOUCHED: none
+OUT-OF-SCOPE: none
+
+A third unattended run found every criterion already met on this branch and built nothing, so there is no commit. Re-checked against the files: a script found every file under `src/` named in `HANDOVER.md` (icons at line 26 in the tree and line 72 in the key-files table). "Known limitations" names Readability and the MutationObserver only as current behaviour, not as improvement paths. The v2.0 changelog entry is at line 154. The twelve checks live on `docs/board/todo/0005-the-twelve-manual-checks-nobody-has-run.md`. "Where the work is" points at the four lanes and lists no work item. Markdown only, so no browser check applies.
+
+The "What I need from you" block at the top still asks the untick question that the 2026-09-29 attended entry already answered. The card also carries a duplicated run of comments under the 2026-10-04 entry, which starts mid-sentence ("session is forbidden to edit...") and repeats the 2026-08-29 thread. Something that writes to the card copied it twice. I did not edit the card. Whoever routes it should read the ask as settled and send it to review.
