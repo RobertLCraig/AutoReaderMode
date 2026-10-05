@@ -79,3 +79,10 @@ OUTCOME: reopen
 
 
 **2026-10-05** The loop moved this card from todo/ to human-review/ because main's suite is red and the runner named no failing test, so there is nothing to hand a session and no card that could name what is red. Every other card on this board is stopped until main is green again. Run the suite on main and read what it says; bin/work-card.ps1 asks main again as soon as something outside docs/board/ changes there.
+
+### 2026-10-05 manager (m20261005064737-9fd6)
+
+**outcome: rob**
+
+The manager pass took this card on 2026-10-05 (m20261005052444-d38e) and chose `reopen`. The loop parked it again after that, and said: "**2026-10-05** The loop moved this card from todo/ to human-review/ because main's suite is red and the runner named no failing test, so there is nothing to hand a session and no card that could name what is red. Every other card on this board is stopped until main is green again. Run the suite on main and read what it says; bin/work-card.ps1 asks main again as soon as something outside docs/board/ changes there." A card is managed once, so this one is yours.
+
