@@ -52,3 +52,28 @@ tag".
 
 
 **2026-10-05** The loop moved this card from in-progress/ to human-review/ because main's suite is red and the runner named no failing test, so there is nothing to hand a session and no card that could name what is red. Every other card on this board is stopped until main is green again. Run the suite on main and read what it says; bin/work-card.ps1 asks main again as soon as something outside docs/board/ changes there.
+
+### 2026-10-05 manager (m20261005052444-d38e)
+
+**outcome: reopen**
+
+The red suite is this card's own open criterion, so the builder can fix it and nobody needs to look.
+
+**what the session said**
+
+Main's suite is red because of this card. `package.json` defines `npm test` as `node tests/acceptance.mjs`. That script prints `FAIL  #4 [chromium]` and sets `process.exitCode` to 1 when any criterion fails. Criterion 4 is the failure that this card exists to fix. The runner did not name a failing test because the script prints lines in the form `FAIL  #n` and does not use a test-framework format. This is not a separate fault.
+
+The code still has the bug. In `src/background.js`, the `webNavigation` handler stores `decision.reason || 'heuristic'`. `decideTrigger` in `src/lib/triggers.js` returns `'no-match'`, so `'no-match'` is stored. `REASON_LABELS` in `src/popup.js` has no entry for it. The signals stay in `window.__ARM_DETECT_RESULT`, which `src/content/detect.js` sets.
+
+Criterion #1 is open, so I write no UNMET line. The builder must:
+1. Return the detect signals from `injectReader`'s `executeScript` call.
+2. Store them in `trigger:<tabId>`.
+3. Label `paywall:meta:content_tier=locked` "Heuristic: paywall meta tag" in `src/popup.js`.
+4. Fix card 0017 in the same change.
+
+When `#4` passes, main goes green again.
+
+WHY: The red suite is this card's own open criterion, so the builder can fix it and nobody needs to look.
+
+OUTCOME: reopen
+
