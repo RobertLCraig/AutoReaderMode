@@ -131,3 +131,31 @@ Marked blocked, not partial: card #1 needs criterion 8 recorded, and only a pers
 No code written, nothing committed. pest/pint do not apply: no PHP in this repository. No check was done in Rob's own browser profile.
 
 **2026-10-04** The loop moved this card from in-progress/ to human-review/. 2 takes in a row ended with it still in in-progress/, and the last one said: `made no progress: 2 of 3 still open, exactly as this take found it`. What this card is waiting for is not another session. bin/work-card.ps1 counts those takes out of storage/logs/work-card.log, and will start it again as soon as a person has moved it back to todo/.
+
+### 2026-10-05 manager (m20261005010742-cad6)
+
+**outcome: rob**
+
+Only you can finish this card: run the 0005 checks by hand in both browsers, and make the 0016 decision. After that, move 0001 back to `todo/`.
+
+**what the session said**
+
+The builder has nothing left to do on this card. I did not change any files.
+
+- **#2 is ticked, and that is correct.** Both test failures have their own cards: #4 has card 0015, and #7 has card 0016.
+- **#1 is open.** It needs PRD criterion 8. Criterion 8 is card 0005, and 0005 has the `not_for_the_loop` flag. Its twelve checks say "proves: manual", so the loop must not run them.
+- **#3 is open.** It needs all eight criteria to pass. That needs three things first:
+  - a fix for 0015 (the popup does not show "Heuristic: paywall meta tag")
+  - your answer on 0016 (`background.js` never injects on `chrome://` pages)
+  - a pass on 0005
+
+  This card says fixes are not its job ("Not this card").
+
+Three runs of the same tree gave the same verdicts. If you reopen the card now, it comes straight back.
+
+Optional: most of the 0005 checks look possible in Playwright. One example is the popup showing the domain. If you remove the `not_for_the_loop` flag, the loop can run them.
+
+WHY: Only you can finish this card: run the 0005 checks by hand in both browsers, and make the 0016 decision. After that, move 0001 back to `todo/`.
+
+OUTCOME: rob
+
