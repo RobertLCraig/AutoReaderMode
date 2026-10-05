@@ -49,3 +49,6 @@ tag".
 - [ ] `node tests/acceptance.mjs chromium` prints `PASS  #4`
 
 ## Comments
+
+
+**2026-10-05** The loop moved this card from in-progress/ to human-review/ because main's suite is red and the runner named no failing test, so there is nothing to hand a session and no card that could name what is red. Every other card on this board is stopped until main is green again. Run the suite on main and read what it says; bin/work-card.ps1 asks main again as soon as something outside docs/board/ changes there.
