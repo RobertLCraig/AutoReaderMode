@@ -56,3 +56,22 @@ tag".
 **2026-10-07** Not a decision, so back to todo/. This is a bug with a known fix (see Plan and the manager pass of 2026-10-05: return the detect.js signals from `injectReader`'s `executeScript`, store them in `trigger:<tabId>`, label `paywall:meta:content_tier=locked` "Heuristic: paywall meta tag" in `src/popup.js`, fix 0017 in the same change). It went round the loop twice because `npm test` exits 1 on this very failure, and the loop refuses every card while main is red. `not_for_the_loop:` is set so an attended session builds it; main stays red after this until #7 passes too (card 0016, which carries options and still needs an answer). Loop entries pruned; git keeps them.
 
 **2026-10-07** The loop moved this card from todo/ to human-review/ because main's suite is red and the runner named no failing test, so there is nothing to hand a session and no card that could name what is red. Every other card on this board is stopped until main is green again. Run the suite on main and read what it says; bin/work-card.ps1 asks main again as soon as something outside docs/board/ changes there.
+
+### 2026-10-07 manager (m20261007034139-d88e)
+
+**outcome: rob**
+
+The fix is known and still not built, but only an attended session can build it, because this card's own failing check keeps main red and the loop will not take any card while main is red.
+
+**what the session said**
+
+The bug is still in the code. In `src/background.js`, the `webNavigation` handler still passes `decision.reason || 'heuristic'` to `injectReader`. `injectReader` still does not read the detect.js signals back from the page. In `src/popup.js`, `REASON_LABELS` and `shortReasonForPill` still have no label for any detection signal. So criterion #1 is still open, and nobody has to untick it.
+
+The plan is already known. The 2026-10-05 manager pass and the 2026-10-07 comment both say what to build. The builder does not need new instructions.
+
+`reopen` will not help. The card sends itself back to todo/, then comes back here, every time. The cause is that this card's own check #4 makes main red, and the loop refuses every card while main is red. `not_for_the_loop:` is already set for this reason. Only an attended session can do the work: Rob, or a session he starts, builds 0015 and 0017 together on main.
+
+WHY: The fix is known and still not built, but only an attended session can build it, because this card's own failing check keeps main red and the loop will not take any card while main is red.
+
+OUTCOME: rob
+
