@@ -54,3 +54,5 @@ tag".
 ## Comments
 
 **2026-10-07** Not a decision, so back to todo/. This is a bug with a known fix (see Plan and the manager pass of 2026-10-05: return the detect.js signals from `injectReader`'s `executeScript`, store them in `trigger:<tabId>`, label `paywall:meta:content_tier=locked` "Heuristic: paywall meta tag" in `src/popup.js`, fix 0017 in the same change). It went round the loop twice because `npm test` exits 1 on this very failure, and the loop refuses every card while main is red. `not_for_the_loop:` is set so an attended session builds it; main stays red after this until #7 passes too (card 0016, which carries options and still needs an answer). Loop entries pruned; git keeps them.
+
+**2026-10-07** The loop moved this card from todo/ to human-review/ because main's suite is red and the runner named no failing test, so there is nothing to hand a session and no card that could name what is red. Every other card on this board is stopped until main is green again. Run the suite on main and read what it says; bin/work-card.ps1 asks main again as soon as something outside docs/board/ changes there.
