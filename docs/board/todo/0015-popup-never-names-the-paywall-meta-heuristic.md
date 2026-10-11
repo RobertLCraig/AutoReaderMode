@@ -75,3 +75,5 @@ WHY: The fix is known and still not built, but only an attended session can buil
 
 OUTCOME: rob
 
+**2026-10-11** Back to todo/: nothing here needs Rob. Direction for the attended session that builds it, in one change with 0017: in `injectReader` (`src/background.js`) return the detect.js result from the `executeScript` call (`window.__ARM_DETECT_RESULT`: whether it fired and its signals); write `trigger:<tabId>` only when the overlay actually mounted (closes 0017), and store the signals with the reason (not the `no-match` fallback). In `src/popup.js` add a label per signal to `REASON_LABELS` / `shortReasonForPill`, with `paywall:meta:content_tier=locked` reading "Heuristic: paywall meta tag". Pass: `node tests/acceptance.mjs chromium` prints `PASS  #4` and 0017's `heuristic miss records no reason` passes. `not_for_the_loop:` stays, because main is red until this lands.
+
