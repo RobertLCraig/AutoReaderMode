@@ -73,3 +73,22 @@ NOT RUN  #8 is card 0005, which is not_for_the_loop
 
 
 **2026-10-13** The reviewer returned this card and its finding is the last review entry at the bottom of ## Direction. The loop moved it from todo/ to human-review/ because it has bounced 1 time between todo and ai-review, all 1 criteria ticked. THE BUILDER COULD NOT ACT ON THAT FINDING. A reviewer reopens every criterion it reports unmet, and the reviews that sent this card back named no criterion they disproved, so it came back with 1 of 1 criteria still ticked, every session found nothing open to do, and the loop promoted it again on the boxes. Add or reopen the criterion the finding breaks and move it back to todo/, or say here why the finding is wrong.
+
+### 2026-10-13 manager (m20261013232331-eff4)
+
+**outcome: rob**
+
+The only failure is the #7 badge check, which card 0016 owns, and this card's own check passed, so the work looks finished and needs a person to accept it.
+
+**what the session said**
+
+The reviewer sent this card back for one reason: `npm test` failed. Only one check failed: `#7 [chromium] badge ""`. That check covers the error badge on chrome pages. Card `0016-no-error-badge-on-chrome-pages.md` owns that problem, and it is in `todo/`. Card 0015 was parked for the same red suite.
+
+This card has one criterion. Its proof is the check `heuristic miss records no reason` in `tests/acceptance.mjs`. That check passed in the same run: "overlay absent, trigger undefined". `injectReader` in `src/background.js` now reads `window.__ARM_DETECT_RESULT`. It does not write `trigger:<tabId>` when nothing fired.
+
+So the finding does not disprove criterion #1. If I reopen the card, the builder will have nothing to do and the card will come back again. The work looks finished. A person must accept it, or hold it until card 0016 makes the suite pass.
+
+WHY: The only failure is the #7 badge check, which card 0016 owns, and this card's own check passed, so the work looks finished and needs a person to accept it.
+
+OUTCOME: rob
+
