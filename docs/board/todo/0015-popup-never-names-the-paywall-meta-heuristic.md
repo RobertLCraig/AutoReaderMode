@@ -41,15 +41,15 @@ tag".
 
 ## Acceptance
 <!-- AC:BEGIN -->
-- [ ] #1 WHEN a non-curated page with the `article:content_tier` locked meta tag triggers reader
+- [x] #1 WHEN a non-curated page with the `article:content_tier` locked meta tag triggers reader
       mode, THE POPUP SHALL show the reason "Heuristic: paywall meta tag". proves: `#4 [chromium]`
       in `tests/acceptance.mjs`
 <!-- AC:END -->
 
 ## Tasks
-- [ ] Carry the detect.js signals back to the service worker and into `trigger:<tabId>`
-- [ ] Label each signal in `src/popup.js`
-- [ ] `node tests/acceptance.mjs chromium` prints `PASS  #4`
+- [x] Carry the detect.js signals back to the service worker and into `trigger:<tabId>`
+- [x] Label each signal in `src/popup.js`
+- [x] `node tests/acceptance.mjs chromium` prints `PASS  #4`
 
 ## Comments
 
@@ -87,3 +87,5 @@ The manager pass took this card on 2026-10-07 (m20261007034139-d88e) and chose `
 
 
 **2026-10-13** Back to todo/: no ask, this is a bug fix for an agent. The direction in the 2026-10-11 comment stands. `not_for_the_loop:` still holds, so an attended session builds it with 0017, or the loop will park it here again while main is red. (agent, after Rob's 2026-10-13 clear-down)
+
+**2026-10-13** Built in 5e99479 with 0017. `injectReader` (`src/background.js`) now reads `window.__ARM_DETECT_RESULT` back after detect.js and stores reason `heuristic` with its `signals` (no longer the `no-match` fallback); `src/popup.js` labels each signal (`SIGNAL_LABELS` / `heuristicLabel`), so `paywall:meta:content_tier=locked` reads "Heuristic: paywall meta tag". Proved by `#4 [chromium]` in `tests/acceptance.mjs`: FAIL before, `PASS  #4 [chromium] overlay present, popup reason "Heuristic: paywall meta tag"` after. Main is still red on `#7 [chromium]` only, which is card 0016 and failed identically before this change (no 0016 code touched). (attended agent, after Rob's 2026-10-13 clear-down)

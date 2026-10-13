@@ -36,12 +36,14 @@ markers under default settings and fails when `trigger:<tabId>` is set.
 
 ## Acceptance
 <!-- AC:BEGIN -->
-- [ ] #1 WHEN the heuristics run on a page and do not fire, THE EXTENSION SHALL NOT record a trigger
+- [x] #1 WHEN the heuristics run on a page and do not fire, THE EXTENSION SHALL NOT record a trigger
       reason for that tab. proves: `heuristic miss records no reason` in `tests/acceptance.mjs`
 <!-- AC:END -->
 
 ## Tasks
-- [ ] Record the trigger reason only when an overlay mounted
-- [ ] Add the `heuristic miss records no reason` check to `tests/acceptance.mjs`
+- [x] Record the trigger reason only when an overlay mounted
+- [x] Add the `heuristic miss records no reason` check to `tests/acceptance.mjs`
 
 ## Comments
+
+**2026-10-13** Built in 5e99479 with 0015. `injectReader` (`src/background.js`) asks the page for `window.__ARM_DETECT_RESULT` after detect.js; when it did not fire it writes no `trigger:<tabId>` and removes any stale one left by an earlier navigation in the same tab. Added `heuristic miss records no reason` to `tests/acceptance.mjs` (plain non-listed page, default settings): FAIL before with `trigger {"reason":"no-match",...}`, `PASS ... overlay absent, trigger undefined` after. (attended agent, after Rob's 2026-10-13 clear-down)
