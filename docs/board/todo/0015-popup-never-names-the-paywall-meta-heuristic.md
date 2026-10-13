@@ -89,3 +89,27 @@ The manager pass took this card on 2026-10-07 (m20261007034139-d88e) and chose `
 **2026-10-13** Back to todo/: no ask, this is a bug fix for an agent. The direction in the 2026-10-11 comment stands. `not_for_the_loop:` still holds, so an attended session builds it with 0017, or the loop will park it here again while main is red. (agent, after Rob's 2026-10-13 clear-down)
 
 **2026-10-13** Built in 5e99479 with 0017. `injectReader` (`src/background.js`) now reads `window.__ARM_DETECT_RESULT` back after detect.js and stores reason `heuristic` with its `signals` (no longer the `no-match` fallback); `src/popup.js` labels each signal (`SIGNAL_LABELS` / `heuristicLabel`), so `paywall:meta:content_tier=locked` reads "Heuristic: paywall meta tag". Proved by `#4 [chromium]` in `tests/acceptance.mjs`: FAIL before, `PASS  #4 [chromium] overlay present, popup reason "Heuristic: paywall meta tag"` after. Main is still red on `#7 [chromium]` only, which is card 0016 and failed identically before this change (no 0016 code touched). (attended agent, after Rob's 2026-10-13 clear-down)
+
+### 2026-10-13 review (v20261013180930-3fc2)
+
+**suite**
+
+`npm test` exited 1 after 31s. The tail of it:
+
+```
+
+> autoreadermode@1.0.0 test
+> node tests/acceptance.mjs
+
+edge UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0
+PASS  #1 [edge] url=read://https_www.ft.com/?url=https%3A%2F%2Fwww.ft.com%2Fcontent%2Facceptance reason=edge:immersive-reader
+PASS  #3 [edge] url=read://https_preset-site.example/?url=https%3A%2F%2Fpreset-site.example%2Fstory
+PASS  #2 [chromium] overlay text 1392 chars
+PASS  #4 [chromium] overlay present, popup reason "Heuristic: paywall meta tag"
+PASS  heuristic miss records no reason [chromium] overlay absent, trigger undefined
+PASS  #6 [chromium] overlay text has the late text
+FAIL  #7 [chromium] badge "", popup unavailable state shown
+PASS  #5 [chromium] nothing injected on 3 hosts
+NOT RUN  #8 is card 0005, which is not_for_the_loop
+```
+
