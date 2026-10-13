@@ -115,3 +115,10 @@ NOT RUN  #8 is card 0005, which is not_for_the_loop
 
 
 **2026-10-13** The loop moved this card from todo/ to human-review/ because main's suite is red and the runner named no failing test, so there is nothing to hand a session and no card that could name what is red. Every other card on this board is stopped until main is green again. Run the suite on main and read what it says; bin/work-card.ps1 asks main again as soon as something outside docs/board/ changes there.
+
+### 2026-10-13 manager (m20261013210418-d295)
+
+**outcome: rob**
+
+The manager pass took this card on 2026-10-13 (m20261013043549-a5a7) and chose `rob`. The loop parked it again after that, and said: "**2026-10-13** The loop moved this card from todo/ to human-review/ because main's suite is red and the runner named no failing test, so there is nothing to hand a session and no card that could name what is red. Every other card on this board is stopped until main is green again. Run the suite on main and read what it says; bin/work-card.ps1 asks main again as soon as something outside docs/board/ changes there." A card is managed once, so this one is yours.
+
