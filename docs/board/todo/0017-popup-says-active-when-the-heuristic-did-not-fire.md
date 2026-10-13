@@ -47,3 +47,27 @@ markers under default settings and fails when `trigger:<tabId>` is set.
 ## Comments
 
 **2026-10-13** Built in 5e99479 with 0015. `injectReader` (`src/background.js`) asks the page for `window.__ARM_DETECT_RESULT` after detect.js; when it did not fire it writes no `trigger:<tabId>` and removes any stale one left by an earlier navigation in the same tab. Added `heuristic miss records no reason` to `tests/acceptance.mjs` (plain non-listed page, default settings): FAIL before with `trigger {"reason":"no-match",...}`, `PASS ... overlay absent, trigger undefined` after. (attended agent, after Rob's 2026-10-13 clear-down)
+
+### 2026-10-13 review (v20261013202013-eec7)
+
+**suite**
+
+`npm test` exited 1 after 26s. The tail of it:
+
+```
+
+> autoreadermode@1.0.0 test
+> node tests/acceptance.mjs
+
+edge UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0
+PASS  #1 [edge] url=read://https_www.ft.com/?url=https%3A%2F%2Fwww.ft.com%2Fcontent%2Facceptance reason=edge:immersive-reader
+PASS  #3 [edge] url=read://https_preset-site.example/?url=https%3A%2F%2Fpreset-site.example%2Fstory
+PASS  #2 [chromium] overlay text 1392 chars
+PASS  #4 [chromium] overlay present, popup reason "Heuristic: paywall meta tag"
+PASS  heuristic miss records no reason [chromium] overlay absent, trigger undefined
+PASS  #6 [chromium] overlay text has the late text
+FAIL  #7 [chromium] badge "", popup unavailable state shown
+PASS  #5 [chromium] nothing injected on 3 hosts
+NOT RUN  #8 is card 0005, which is not_for_the_loop
+```
+
