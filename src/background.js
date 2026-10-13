@@ -96,8 +96,19 @@ async function injectReader(tabId, url, reason, requireHeuristic) {
 
         await chrome.scripting.executeScript({ target: { tabId }, files });
 
+        // reader.js mounts only if detect.js fired, so ask the page the same question.
+        let signals;
+        if (requireHeuristic) {
+            const [{ result } = {}] = await chrome.scripting.executeScript({
+                target: { tabId },
+                func: () => window.__ARM_DETECT_RESULT,
+            });
+            if (!result || !result.fire) return chrome.storage.session.remove(`trigger:${tabId}`);
+            signals = result.signals;
+        }
+
         setTriggerReason(tabId, {
-            url, reason, requireHeuristic, timestamp: Date.now(),
+            url, reason, requireHeuristic, signals, timestamp: Date.now(),
         });
     } catch (err) {
         console.error(`[ARM] script injection failed (${url}):`, err.message);
@@ -231,7 +242,7 @@ async function handleNavigation(details) {
     }
 
     const requireHeuristic = !decision.fire && decision.allowHeuristic;
-    injectReader(tabId, details.url, decision.reason || 'heuristic', requireHeuristic);
+    injectReader(tabId, details.url, requireHeuristic ? 'heuristic' : decision.reason, requireHeuristic);
 }
 
 chrome.webNavigation.onCompleted.addListener(handleNavigation);

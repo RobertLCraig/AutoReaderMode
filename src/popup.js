@@ -87,6 +87,22 @@ const REASON_LABELS = {
     'manual':              'You opened reader mode here manually',
 };
 
+// detect.js signals are "<kind>:<test>:<detail>"; label by the first two parts.
+const SIGNAL_LABELS = {
+    'paywall:meta':        'paywall meta tag',
+    'paywall:jsonld':      'paywall structured data',
+    'paywall:dom':         'paywall element',
+    'paywall:copy':        'subscribe prompt',
+    'ads:ad-iframes':      'ad iframes',
+    'ads:iframe-ratio':    'iframe density',
+    'ads:sticky-coverage': 'sticky overlays',
+};
+
+function heuristicLabel(signals) {
+    const names = (signals || []).map(s => SIGNAL_LABELS[s.split(':').slice(0, 2).join(':')] || s);
+    return names.length ? `Heuristic: ${names.join(', ')}` : REASON_LABELS.heuristic;
+}
+
 function shortReasonForPill(reason) {
     if (!reason) return 'Not triggered';
     if (reason === 'manual') return 'Manual';
@@ -118,7 +134,9 @@ function renderStatus(triggerData, tab) {
     els.pillText.textContent = shortReasonForPill(reason);
 
     els.reasonLine.className = 'reason-line';
-    els.reasonLine.textContent = REASON_LABELS[reason] || 'Reader mode is active on this tab.';
+    els.reasonLine.textContent = reason === 'heuristic'
+        ? heuristicLabel(triggerData.signals)
+        : REASON_LABELS[reason] || 'Reader mode is active on this tab.';
 
     els.readerBtnTxt.textContent = 'Exit Reader Mode';
     els.readerBtn.classList.add('exit');

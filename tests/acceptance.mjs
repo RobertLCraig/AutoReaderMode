@@ -18,7 +18,7 @@ const article = (title, head = '') =>
 
 function record(n, browser, pass, detail) {
     results.push({ n, browser, pass, detail });
-    console.log(`${pass ? 'PASS' : 'FAIL'}  #${n} [${browser}] ${detail}`);
+    console.log(`${pass ? 'PASS' : 'FAIL'}  ${typeof n === 'number' ? '#' + n : n} [${browser}] ${detail}`);
 }
 
 async function launch(channel) {
@@ -134,6 +134,16 @@ async function chromiumRun() {
         record(4, 'chromium', !!t4 && reason === 'Heuristic: paywall meta tag',
             `overlay ${t4 ? 'present' : 'absent'}, popup reason "${reason}"`);
         await popup.close(); await page.close();
+
+        // 0017: heuristics run on a plain non-listed page and do not fire -> no trigger reason stored.
+        page = await b.context.newPage();
+        const urlMiss = 'https://plain-news.example/story';
+        await page.goto(urlMiss);
+        const tMiss = await overlayText(page, 3000);
+        const trMiss = await trigger(b.worker, await tabId(b.worker, urlMiss));
+        record('heuristic miss records no reason', 'chromium', tMiss === null && !trMiss,
+            `overlay ${tMiss === null ? 'absent' : 'present'}, trigger ${JSON.stringify(trMiss)}`);
+        await page.close();
 
         // 6: body filled by script after load -> overlay carries that text.
         await b.worker.evaluate(() => chrome.storage.sync.set({ readerSites: ['spa.example'] }));
