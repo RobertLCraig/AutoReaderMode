@@ -85,3 +85,5 @@ OUTCOME: rob
 
 The manager pass took this card on 2026-10-07 (m20261007034139-d88e) and chose `rob`. The loop parked it again after that, and said: "**2026-10-13** The loop moved this card from todo/ to human-review/ because main's suite is red and the runner named no failing test, so there is nothing to hand a session and no card that could name what is red. Every other card on this board is stopped until main is green again. Run the suite on main and read what it says; bin/work-card.ps1 asks main again as soon as something outside docs/board/ changes there." A card is managed once, so this one is yours.
 
+
+**2026-10-13** Back to todo/: no ask, this is a bug fix for an agent. The direction in the 2026-10-11 comment stands. `not_for_the_loop:` still holds, so an attended session builds it with 0017, or the loop will park it here again while main is red. (agent, after Rob's 2026-10-13 clear-down)
