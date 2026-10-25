@@ -58,3 +58,25 @@ reached in `tests/acceptance.mjs` by pointing the popup at a `file://` page or b
 **2026-10-20** Raised by the shortcomings sweep. Read off the code; nothing here was run.
 
 **2026-10-25** The loop moved this card from todo/ to human-review/ WITHOUT trying it. All 4 of its open acceptance criteria say proves: manual, so there is nothing left an unattended session could close and starting one would change nothing. Each open criterion names what to look at and what a pass is: tick what passes and move the card on, or say what failed and move it back to todo/.
+
+### 2026-10-25 manager (m20261025151013-d54e)
+
+**outcome: reopen**
+
+No code has been written for this card yet, and the card's Plan already says how to test every item without a person.
+
+**what the session said**
+
+The four fixes the card asks for are not in the code yet. Nothing on this card has been built.
+
+- In `src/background.js`, `injectReader` still catches every error and returns nothing. So the `manual-toggle` handler still replies `{ ok: true }`.
+- No code clears the red `!` badge after a later success. The only badge clear is in `handleNavigation`, and it runs only when the extension does not fire.
+- `src/popup.js` `RESTRICTED_PREFIXES` still does not include `file://`.
+- Both places still call `decodeURIComponent` a second time: the hostname read near the top of `src/popup.js`, and the Edge `read://` exit in the `manual-toggle` handler.
+
+All four criteria are open, and the builder can close them. The card's own Plan says how to test each one in `tests/acceptance.mjs`: stub `chrome.scripting.executeScript` to reject, or point the popup at a `file://` page. So the "proves: manual" tags do not stop an unattended session. The builder must build all four Tasks and add `record('manual', ...)` checks.
+
+WHY: No code has been written for this card yet, and the card's Plan already says how to test every item without a person.
+
+OUTCOME: reopen
+
