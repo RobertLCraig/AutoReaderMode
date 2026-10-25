@@ -82,3 +82,10 @@ OUTCOME: reopen
 
 
 **2026-10-25** The loop moved this card from todo/ to human-review/ WITHOUT trying it. All 4 of its open acceptance criteria say proves: manual, so there is nothing left an unattended session could close and starting one would change nothing. Each open criterion names what to look at and what a pass is: tick what passes and move the card on, or say what failed and move it back to todo/.
+
+### 2026-10-25 manager (m20261025161702-0cad)
+
+**outcome: rob**
+
+The manager pass took this card on 2026-10-25 (m20261025151013-d54e) and chose `reopen`. The loop parked it again after that, and said: "**2026-10-25** The loop moved this card from todo/ to human-review/ WITHOUT trying it. All 4 of its open acceptance criteria say proves: manual, so there is nothing left an unattended session could close and starting one would change nothing. Each open criterion names what to look at and what a pass is: tick what passes and move the card on, or say what failed and move it back to todo/." A card is managed once, so this one is yours.
+
