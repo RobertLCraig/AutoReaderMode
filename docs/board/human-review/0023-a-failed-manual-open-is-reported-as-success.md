@@ -1,5 +1,9 @@
 # A failed manual open is reported as success and the popup just closes
 
+## What I need from you
+
+The loop moved this card from todo/ to human-review/ WITHOUT trying it. All 4 of its open acceptance criteria say proves: manual, so there is nothing left an unattended session could close and starting one would change nothing. Each open criterion names what to look at and what a pass is: tick what passes and move the card on, or say what failed and move it back to todo/.
+
 ## Why
 **On a page where the extension cannot run, clicking "Open Reader Mode" closes the popup and nothing
 happens.** `injectReader` in `src/background.js` catches every injection error itself, sets a red
@@ -52,3 +56,5 @@ reached in `tests/acceptance.mjs` by pointing the popup at a `file://` page or b
 ## Comments
 
 **2026-10-20** Raised by the shortcomings sweep. Read off the code; nothing here was run.
+
+**2026-10-25** The loop moved this card from todo/ to human-review/ WITHOUT trying it. All 4 of its open acceptance criteria say proves: manual, so there is nothing left an unattended session could close and starting one would change nothing. Each open criterion names what to look at and what a pass is: tick what passes and move the card on, or say what failed and move it back to todo/.
