@@ -80,3 +80,5 @@ WHY: No code has been written for this card yet, and the card's Plan already say
 
 OUTCOME: reopen
 
+
+**2026-10-25** The loop moved this card from todo/ to human-review/ WITHOUT trying it. All 4 of its open acceptance criteria say proves: manual, so there is nothing left an unattended session could close and starting one would change nothing. Each open criterion names what to look at and what a pass is: tick what passes and move the card on, or say what failed and move it back to todo/.
