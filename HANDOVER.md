@@ -73,6 +73,8 @@ Before injecting, `background.js` stamps three globals on the page — `__ARM_TR
 
 `src/utils.js` and the old top-level `src/reader.js` were removed in v2.0. `isEdgeBrowser()` now lives in `background.js`, and the `read://` URL is built inline there.
 
+**Signing key, 2026-10-25.** `key/AutoReaderMode.pem` had been committed and was public on GitHub. It was replaced with a new key, removed from all history (`git filter-branch`, force-pushed), and `bin/AutoReaderMode.crx` was rebuilt with the new key. The extension ID changed, so an installed `.crx` copy must be removed and installed again. `key/` stays git-ignored: never commit it.
+
 ---
 
 ## Known limitations
